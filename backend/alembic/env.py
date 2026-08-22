@@ -1,6 +1,7 @@
 """Alembic environment — async engine, URL taken from app settings."""
 
 import asyncio
+import re
 from logging.config import fileConfig
 
 from sqlalchemy.engine import Connection
@@ -21,11 +22,31 @@ target_metadata = Base.metadata
 
 
 def include_object(obj: object, name: str, type_: str, reflected: bool, compare_to: object) -> bool:
-    """Keep autogenerate away from PostGIS-owned tables (spatial_ref_sys etc.)."""
-    return not (type_ == "table" and name == "spatial_ref_sys")
+    """Compare only application-owned, migration-managed schema objects.
+
+    PostGIS owns its support schemas, history partitions are created dynamically,
+    and indexes are deliberately managed by the SQL migrations rather than ORM
+    metadata.  Those objects have separate schema tests and should not generate
+    destructive Alembic revisions.
+    """
+    schema = getattr(obj, "schema", None)
+    if schema in {"tiger", "tiger_data", "topology"}:
+        return False
+    if type_ == "table" and (
+        name == "spatial_ref_sys"
+        or re.fullmatch(r"vehicle_position_history_\d{8}", name) is not None
+    ):
+        return False
+    return not (type_ == "index" and reflected and compare_to is None)
 
 
 def do_run_migrations(connection: Connection) -> None:
+    # Some PostGIS images append extension schemas (notably tiger/topology) to
+    # the database search path. Migrations and drift detection own public only.
+    connection.exec_driver_sql("SET search_path TO public")
+    # SET starts an implicit transaction; close it so Alembic can own and
+    # commit the migration transaction below.
+    connection.commit()
     context.configure(
         connection=connection,
         target_metadata=target_metadata,
