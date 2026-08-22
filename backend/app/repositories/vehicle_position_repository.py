@@ -1,10 +1,13 @@
 """Vehicle position queries: segment lookup for the simulator, position
 inserts, and the latest-per-vehicle live snapshot."""
 
-from sqlalchemy import Row, insert, text
+from datetime import date
+
+from sqlalchemy import Row, text
+from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models import VehiclePosition
+from app.models import CurrentVehiclePosition, VehiclePositionHistory
 
 # For each trip of the given services that is under way at :now_s (seconds
 # since that service day's midnight), return the segment between the two
@@ -45,7 +48,7 @@ LATEST_POSITIONS_SQL = text(
     SELECT DISTINCT ON (vp.vehicle_id)
            vp.vehicle_id, vp.trip_id, vp.lat, vp.lon, vp.delay_seconds,
            vp.current_stop_id, vp.recorded_at, r.short_name AS route_short_name
-    FROM vehicle_positions vp
+    FROM current_vehicle_positions vp
     LEFT JOIN trips t  ON t.id = vp.trip_id
     LEFT JOIN routes r ON r.id = t.route_id
     WHERE vp.recorded_at > now() - make_interval(secs => :max_age_s)
@@ -70,8 +73,38 @@ class VehiclePositionRepository:
         return list(result)
 
     async def insert_positions(self, rows: list[dict]) -> None:
-        if rows:
-            await self.session.execute(insert(VehiclePosition), rows)
+        if not rows:
+            return
+        await self.session.execute(insert(VehiclePositionHistory), rows)
+        statement = insert(CurrentVehiclePosition).values(rows)
+        await self.session.execute(
+            statement.on_conflict_do_update(
+                index_elements=[CurrentVehiclePosition.vehicle_id],
+                set_={
+                    "trip_id": statement.excluded.trip_id,
+                    "lat": statement.excluded.lat,
+                    "lon": statement.excluded.lon,
+                    "delay_seconds": statement.excluded.delay_seconds,
+                    "current_stop_id": statement.excluded.current_stop_id,
+                    "recorded_at": statement.excluded.recorded_at,
+                },
+            )
+        )
+
+    async def maintain_partitions(
+        self, reference_date: date, retention_days: int, future_days: int
+    ) -> None:
+        await self.session.execute(
+            text(
+                "SELECT maintain_vehicle_position_partitions("
+                ":reference_date, :retention_days, :future_days)"
+            ),
+            {
+                "reference_date": reference_date,
+                "retention_days": retention_days,
+                "future_days": future_days,
+            },
+        )
 
     async def latest_positions(self, max_age_s: int = 60) -> list[Row]:
         result = await self.session.execute(LATEST_POSITIONS_SQL, {"max_age_s": max_age_s})

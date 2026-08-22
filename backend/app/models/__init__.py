@@ -11,7 +11,7 @@ from app.models.shape_point import ShapePoint
 from app.models.stop import Stop
 from app.models.stop_time import StopTime
 from app.models.trip import Trip
-from app.models.vehicle_position import VehiclePosition
+from app.models.vehicle_position import CurrentVehiclePosition, VehiclePositionHistory
 
 __all__ = [
     "Agency",
@@ -25,5 +25,6 @@ __all__ = [
     "Stop",
     "StopTime",
     "Trip",
-    "VehiclePosition",
+    "CurrentVehiclePosition",
+    "VehiclePositionHistory",
 ]

@@ -42,7 +42,8 @@ from app.models import (
 logger = logging.getLogger(__name__)
 
 GTFS_TABLES = [
-    "vehicle_positions",
+    "current_vehicle_positions",
+    "vehicle_position_history",
     "stop_times",
     "trips",
     "shape_points",
