@@ -31,7 +31,7 @@ deployed from [`website/`](website) via GitHub Pages on every `v*.*.*` tag.
 | Mobile | Flutter — Riverpod 3, GoRouter, Dio, freezed, flutter_map (OSM) |
 | Seed data | committed synthetic GTFS feed: 1 agency, 5 routes, 30 stops, 682 trips, 6 396 stop_times |
 | Planner | Connection Scan Algorithm, transfer-aware, after-midnight-correct |
-| Realtime | scheduled-position simulation → `vehicle_positions` + WebSocket broadcast |
+| Realtime | current-state upserts + 30-day partitioned history + WebSocket broadcast |
 | Tests | pytest suite against the seeded db · Flutter unit + widget tests · CI in [`.github/workflows/ci.yml`](.github/workflows/ci.yml) |
 
 ## Repository layout
@@ -81,6 +81,11 @@ DDL in [database/sql/](database/sql). The short version:
 - **Indexing** — GiST on geometries (KNN + `ST_DWithin`), trigram GIN on
   searchable names, B-tree composites for the hot schedule lookups
   (`(stop_id, departure_time)`, `(trip_id, stop_sequence)`), B-tree on FKs.
+- **Route patterns** — trips sharing a direction, shape and ordered stop list
+  reuse an explicit pattern, so branches and short turns are not hidden behind
+  an arbitrary representative trip.
+- **Realtime storage** — one upserted current row per vehicle plus append-only
+  daily history partitions retained for 30 days.
 
 ### ERD
 
@@ -96,8 +101,11 @@ erDiagram
   trips ||--o{ stop_times : contains
   stops ||--o{ stop_times : "served at"
   stops ||--o| stops : "parent of"
-  trips ||--o{ vehicle_positions : tracks
-  stops ||--o{ vehicle_positions : near
+  routes ||--o{ route_patterns : variants
+  route_patterns ||--o{ route_pattern_stops : contains
+  route_patterns ||--o{ trips : classifies
+  trips ||--o{ current_vehicle_positions : tracks
+  trips ||--o{ vehicle_position_history : logs
   agency { bigint id PK  text gtfs_agency_id UK  text name  text timezone }
   routes { bigint id PK  text gtfs_route_id UK  bigint agency_id FK  text short_name  text long_name  smallint route_type }
   stops { bigint id PK  text gtfs_stop_id UK  text name  geometry geom  bigint parent_station_id FK }
@@ -108,7 +116,9 @@ erDiagram
   shape_points { bigint id PK  bigint shape_id FK  int pt_sequence  double lat  double lon }
   trips { bigint id PK  text gtfs_trip_id UK  bigint route_id FK  bigint service_id FK  bigint shape_id FK  smallint direction_id }
   stop_times { bigint trip_id PK  int stop_sequence PK  bigint stop_id FK  interval arrival_time  interval departure_time }
-  vehicle_positions { bigint id PK  text vehicle_id  bigint trip_id FK  bigint current_stop_id FK  geometry geom  int delay_seconds  timestamptz recorded_at }
+  route_patterns { bigint id PK  bigint route_id FK  bigint shape_id FK  bigint[] stop_signature }
+  current_vehicle_positions { text vehicle_id PK  bigint trip_id FK  geometry geom  timestamptz recorded_at }
+  vehicle_position_history { bigint id PK  text vehicle_id  bigint trip_id FK  geometry geom  timestamptz recorded_at }
 ```
 
 ## Route planner
@@ -145,7 +155,7 @@ GTFS-Realtime is simplified to a simulation: a background task (started with
 the app, or standalone via `scripts/simulate_realtime.py`) finds every trip
 under way at the current moment, interpolates each vehicle's position between
 its two current stops from the schedule, applies a slowly-drifting random
-delay, appends a row to `vehicle_positions`, and broadcasts the update to all
+delay, appends a history row, upserts current state, and broadcasts the update to all
 WebSocket clients. `WS /ws/realtime` sends a `snapshot` message on connect,
 then `vehicle_position` updates roughly every 2 s; `GET /api/v1/live/vehicles`
 serves the same latest-per-vehicle snapshot over REST (`DISTINCT ON` +

@@ -7,7 +7,7 @@ picture; this is the quick reference.
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
-alembic upgrade head                 # applies database/sql via the migration
+alembic upgrade head                 # applies immutable, incremental revisions
 python scripts/import_gtfs.py        # seed feed; idempotent (truncate + reload)
 uvicorn app.main:app --reload        # http://localhost:8000/docs
 pytest                               # needs the seeded database
@@ -20,6 +20,6 @@ departures, realtime simulation) → `app/repositories` (all SQL) →
 ORM (one file per table), `app/schemas` the Pydantic response models,
 `app/websocket` the connection manager + `/ws/realtime` handler.
 
-The Alembic initial migration executes the canonical DDL from
-`../database/sql/` verbatim — the reference SQL and the applied schema cannot
-drift apart.
+Alembic revision `0001` owns an immutable snapshot of the original DDL;
+subsequent schema changes are incremental migrations. `../database/sql/`
+documents the complete schema at the current head revision.
