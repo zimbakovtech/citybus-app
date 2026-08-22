@@ -237,7 +237,6 @@ class GtfsImportService:
                     description=_opt(row, "stop_desc"),
                     lat=lat,
                     lon=lon,
-                    geom=f"SRID=4326;POINT({lon} {lat})",  # X = lon, Y = lat
                     location_type=int(row.get("location_type") or 0),
                 )
                 .returning(Stop.id)
