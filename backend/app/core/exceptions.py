@@ -9,3 +9,7 @@ class NotFoundError(Exception):
         self.entity = entity
         self.key = key
         super().__init__(f"{entity} {key} not found")
+
+
+class InvalidRequestError(Exception):
+    """A validly-shaped request contains incompatible domain selectors."""

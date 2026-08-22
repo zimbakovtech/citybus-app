@@ -11,7 +11,8 @@ snapshot — partial merges of two feeds are not meaningful.
 Import order (parents before children so foreign keys resolve):
   agency -> routes -> services (derived from calendar + calendar_dates)
   -> calendar -> calendar_dates -> stops -> shapes -> shape_points
-  -> trips -> stop_times, then shapes.geom is assembled from shape_points.
+  -> route_patterns -> trips -> stop_times, then shapes.geom is assembled from
+  shape_points.
 """
 
 import csv
@@ -31,6 +32,8 @@ from app.models import (
     Calendar,
     CalendarDate,
     Route,
+    RoutePattern,
+    RoutePatternStop,
     Service,
     Shape,
     ShapePoint,
@@ -38,6 +41,7 @@ from app.models import (
     StopTime,
     Trip,
 )
+from app.services.gtfs_validation import ValidatedFeed, validate_feed
 
 logger = logging.getLogger(__name__)
 
@@ -46,6 +50,8 @@ GTFS_TABLES = [
     "vehicle_position_history",
     "stop_times",
     "trips",
+    "route_pattern_stops",
+    "route_patterns",
     "shape_points",
     "shapes",
     "calendar_dates",
@@ -113,9 +119,10 @@ class GtfsImportService:
         self.session = session
 
     async def import_feed(self, path: str | Path) -> dict[str, int]:
-        """Load a full GTFS feed. Returns row counts per table."""
+        """Validate and atomically load a full GTFS feed. Returns table counts."""
         feed = GtfsFeed(path)
         counts: dict[str, int] = {}
+        self._validated: ValidatedFeed = validate_feed(feed)
 
         await self._truncate()
         counts["agency"] = await self._import_agencies(feed)
@@ -125,7 +132,9 @@ class GtfsImportService:
         )
         counts["stops"] = await self._import_stops(feed)
         counts["shapes"], counts["shape_points"] = await self._import_shapes(feed)
-        counts["trips"] = await self._import_trips(feed)
+        counts["route_patterns"], counts["route_pattern_stops"], counts["trips"] = (
+            await self._import_trips(feed)
+        )
         counts["stop_times"] = await self._import_stop_times(feed)
         await self._build_shape_geometries()
         await self.session.commit()
@@ -282,12 +291,62 @@ class GtfsImportService:
             await self.session.execute(insert(ShapePoint), point_rows)
         return len(self._shape_ids), len(point_rows)
 
-    async def _import_trips(self, feed: GtfsFeed) -> int:
+    async def _import_trips(self, feed: GtfsFeed) -> tuple[int, int, int]:
         self._trip_ids: dict[str, int] = {}
-        count = 0
-        for row in feed.rows("trips.txt"):
+        trip_rows = list(feed.rows("trips.txt"))
+        pattern_ids: dict[tuple[int, int | None, int | None, tuple[int, ...]], int] = {}
+        pattern_stop_count = 0
+
+        for row in trip_rows:
             direction = _opt(row, "direction_id")
             shape = _opt(row, "shape_id")
+            stop_ids = tuple(
+                self._stop_ids[gtfs_stop_id]
+                for gtfs_stop_id in self._validated.trip_stop_ids[row["trip_id"]]
+            )
+            key = (
+                self._route_ids[row["route_id"]],
+                int(direction) if direction is not None else None,
+                self._shape_ids.get(shape) if shape else None,
+                stop_ids,
+            )
+            if key in pattern_ids:
+                continue
+            result = await self.session.execute(
+                insert(RoutePattern)
+                .values(
+                    route_id=key[0],
+                    direction_id=key[1],
+                    shape_id=key[2],
+                    stop_signature=list(stop_ids),
+                )
+                .returning(RoutePattern.id)
+            )
+            pattern_id = result.scalar_one()
+            pattern_ids[key] = pattern_id
+            await self.session.execute(
+                insert(RoutePatternStop),
+                [
+                    {"pattern_id": pattern_id, "stop_order": order, "stop_id": stop_id}
+                    for order, stop_id in enumerate(stop_ids, start=1)
+                ],
+            )
+            pattern_stop_count += len(stop_ids)
+
+        count = 0
+        for row in trip_rows:
+            direction = _opt(row, "direction_id")
+            shape = _opt(row, "shape_id")
+            stop_ids = tuple(
+                self._stop_ids[gtfs_stop_id]
+                for gtfs_stop_id in self._validated.trip_stop_ids[row["trip_id"]]
+            )
+            pattern_key = (
+                self._route_ids[row["route_id"]],
+                int(direction) if direction is not None else None,
+                self._shape_ids.get(shape) if shape else None,
+                stop_ids,
+            )
             result = await self.session.execute(
                 insert(Trip)
                 .values(
@@ -295,6 +354,7 @@ class GtfsImportService:
                     route_id=self._route_ids[row["route_id"]],
                     service_id=self._service_ids[row["service_id"]],
                     shape_id=self._shape_ids.get(shape) if shape else None,
+                    route_pattern_id=pattern_ids[pattern_key],
                     headsign=_opt(row, "trip_headsign"),
                     direction_id=int(direction) if direction is not None else None,
                     block_id=_opt(row, "block_id"),
@@ -303,7 +363,7 @@ class GtfsImportService:
             )
             self._trip_ids[row["trip_id"]] = result.scalar_one()
             count += 1
-        return count
+        return len(pattern_ids), pattern_stop_count, count
 
     async def _import_stop_times(self, feed: GtfsFeed) -> int:
         batch: list[dict] = []

@@ -22,6 +22,14 @@ class ShapeGeoJson(BaseModel):
     coordinates: list[list[float]]
 
 
+class RoutePatternSummary(BaseModel):
+    id: int
+    direction_id: int | None
+    stop_count: int
+    trip_count: int
+    shape_available: bool
+
+
 class TripSummary(BaseModel):
     id: int
     headsign: str | None

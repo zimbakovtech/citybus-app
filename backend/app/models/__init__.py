@@ -5,6 +5,7 @@ from app.models.base import Base
 from app.models.calendar import Calendar
 from app.models.calendar_date import CalendarDate
 from app.models.route import Route
+from app.models.route_pattern import RoutePattern, RoutePatternStop
 from app.models.service import Service
 from app.models.shape import Shape
 from app.models.shape_point import ShapePoint
@@ -19,6 +20,8 @@ __all__ = [
     "Calendar",
     "CalendarDate",
     "Route",
+    "RoutePattern",
+    "RoutePatternStop",
     "Service",
     "Shape",
     "ShapePoint",
