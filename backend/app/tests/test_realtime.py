@@ -9,6 +9,7 @@ from datetime import datetime
 import pytest
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
+from sqlalchemy import text
 
 from app.core.config import settings
 from app.core.database import SessionFactory, engine
@@ -47,6 +48,26 @@ async def test_tick_produces_vehicles_and_live_snapshot(
     # (60 s recency window), so check containment rather than equality
     assert {m["vehicle_id"] for m in messages} <= set(by_id)
     assert by_id[message["vehicle_id"]]["route_short_name"] == message["route_short_name"]
+
+
+async def test_tick_appends_history_and_upserts_current_state(frozen_clock: None) -> None:
+    async with SessionFactory() as session:
+        before_history = await session.scalar(text("SELECT count(*) FROM vehicle_position_history"))
+        service = RealtimeService(session)
+        first = await service.tick()
+        second = await service.tick()
+        after_history = await session.scalar(text("SELECT count(*) FROM vehicle_position_history"))
+        current_count = await session.scalar(
+            text(
+                "SELECT count(*) FROM current_vehicle_positions "
+                "WHERE vehicle_id = ANY(:vehicle_ids)"
+            ),
+            {"vehicle_ids": [message["vehicle_id"] for message in first]},
+        )
+
+    assert first and len(second) == len(first)
+    assert after_history == before_history + len(first) + len(second)
+    assert current_count == len(first)
 
 
 def test_websocket_snapshot_then_updates(frozen_clock: None) -> None:

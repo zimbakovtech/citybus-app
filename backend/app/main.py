@@ -12,7 +12,7 @@ from fastapi.responses import JSONResponse
 from app.api.v1.router import api_router
 from app.core.config import settings
 from app.core.database import SessionFactory
-from app.core.exceptions import NotFoundError
+from app.core.exceptions import InvalidRequestError, NotFoundError
 from app.core.logging import configure_logging
 from app.services.realtime_service import RealtimeService
 from app.websocket.handlers import ws_router
@@ -67,6 +67,11 @@ app.add_middleware(
 @app.exception_handler(NotFoundError)
 async def not_found_handler(request: Request, exc: NotFoundError) -> JSONResponse:
     return JSONResponse(status_code=404, content={"detail": str(exc)})
+
+
+@app.exception_handler(InvalidRequestError)
+async def invalid_request_handler(request: Request, exc: InvalidRequestError) -> JSONResponse:
+    return JSONResponse(status_code=422, content={"detail": str(exc)})
 
 
 app.include_router(api_router)

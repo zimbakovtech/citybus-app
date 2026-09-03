@@ -6,11 +6,18 @@ erDiagram
   services ||--o{ calendar_dates : excepts
   shapes ||--o{ shape_points : "built from"
   shapes ||--o{ trips : "path for"
+  routes ||--o{ route_patterns : variants
+  shapes ||--o{ route_patterns : "path for"
+  route_patterns ||--o{ route_pattern_stops : contains
+  stops ||--o{ route_pattern_stops : includes
+  route_patterns ||--o{ trips : classifies
   trips ||--o{ stop_times : contains
   stops ||--o{ stop_times : "served at"
   stops ||--o| stops : "parent of"
-  trips ||--o{ vehicle_positions : tracks
-  stops ||--o{ vehicle_positions : near
+  trips ||--o{ current_vehicle_positions : tracks
+  stops ||--o{ current_vehicle_positions : near
+  trips ||--o{ vehicle_position_history : logs
+  stops ||--o{ vehicle_position_history : near
   agency { bigint id PK  text gtfs_agency_id UK  text name  text timezone }
   routes { bigint id PK  text gtfs_route_id UK  bigint agency_id FK  text short_name  text long_name  smallint route_type }
   stops { bigint id PK  text gtfs_stop_id UK  text name  geometry geom  bigint parent_station_id FK }
@@ -19,6 +26,9 @@ erDiagram
   calendar_dates { bigint id PK  bigint service_id FK  date date  smallint exception_type }
   shapes { bigint id PK  text gtfs_shape_id UK  geometry geom }
   shape_points { bigint id PK  bigint shape_id FK  int pt_sequence  double lat  double lon }
-  trips { bigint id PK  text gtfs_trip_id UK  bigint route_id FK  bigint service_id FK  bigint shape_id FK  smallint direction_id }
+  route_patterns { bigint id PK  bigint route_id FK  bigint shape_id FK  bigint_array stop_signature }
+  route_pattern_stops { bigint pattern_id PK  int stop_order PK  bigint stop_id FK }
+  trips { bigint id PK  text gtfs_trip_id UK  bigint route_id FK  bigint service_id FK  bigint shape_id FK  bigint route_pattern_id FK  smallint direction_id }
   stop_times { bigint trip_id PK  int stop_sequence PK  bigint stop_id FK  interval arrival_time  interval departure_time }
-  vehicle_positions { bigint id PK  text vehicle_id  bigint trip_id FK  bigint current_stop_id FK  geometry geom  int delay_seconds  timestamptz recorded_at }
+  current_vehicle_positions { text vehicle_id PK  bigint trip_id FK  bigint current_stop_id FK  geometry geom  timestamptz recorded_at }
+  vehicle_position_history { bigint id PK  timestamptz recorded_at PK  text vehicle_id  bigint trip_id FK  geometry geom }

@@ -49,6 +49,30 @@ async def test_route_ordered_stops(client: AsyncClient) -> None:
     assert [s["id"] for s in reverse.json()] == [s["id"] for s in reversed(stops)]
 
 
+async def test_route_patterns_and_explicit_selection(client: AsyncClient) -> None:
+    response = await client.get(f"/api/v1/routes/{LINE_2}/patterns")
+    assert response.status_code == 200
+    patterns = response.json()
+    assert len(patterns) == 2
+    assert {pattern["direction_id"] for pattern in patterns} == {0, 1}
+    assert all(pattern["stop_count"] == 13 for pattern in patterns)
+    assert all(pattern["trip_count"] > 0 for pattern in patterns)
+    assert all(pattern["shape_available"] is True for pattern in patterns)
+
+    outbound = next(pattern for pattern in patterns if pattern["direction_id"] == 0)
+    stops = await client.get(
+        f"/api/v1/routes/{LINE_2}/stops", params={"pattern_id": outbound["id"]}
+    )
+    assert stops.status_code == 200
+    assert stops.json()[0]["name"] == "Gjorche Petrov"
+
+    mismatch = await client.get(
+        f"/api/v1/routes/{LINE_2}/stops",
+        params={"pattern_id": outbound["id"], "direction_id": 1},
+    )
+    assert mismatch.status_code == 422
+
+
 async def test_route_shape_geojson(client: AsyncClient) -> None:
     response = await client.get(f"/api/v1/routes/{LINE_2}/shape")
     assert response.status_code == 200

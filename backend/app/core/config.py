@@ -11,6 +11,8 @@ class Settings(BaseSettings):
 
     realtime_enabled: bool = True
     realtime_tick_seconds: float = 2.0
+    vehicle_history_retention_days: int = 30
+    vehicle_partition_future_days: int = 7
 
     # minimum time needed to change vehicles at a stop (route planner)
     transfer_buffer_seconds: int = 120

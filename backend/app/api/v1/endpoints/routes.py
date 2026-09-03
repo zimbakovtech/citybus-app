@@ -5,7 +5,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_session
 from app.schemas.common import ErrorResponse, Page
-from app.schemas.route import RouteDetail, RouteSummary, ShapeGeoJson, TripSummary
+from app.schemas.route import (
+    RouteDetail,
+    RoutePatternSummary,
+    RouteSummary,
+    ShapeGeoJson,
+    TripSummary,
+)
 from app.schemas.stop import StopSummary
 from app.services.route_service import RouteService
 
@@ -37,33 +43,50 @@ async def route_detail(route_id: int, service: RouteService = Depends(get_servic
 
 
 @router.get(
+    "/{route_id}/patterns",
+    summary="Route patterns",
+    description="Distinct direction/shape/ordered-stop patterns used by trips of this route.",
+    response_model=list[RoutePatternSummary],
+    responses={404: {"model": ErrorResponse}},
+)
+async def route_patterns(
+    route_id: int,
+    direction_id: int | None = Query(None, ge=0, le=1),
+    service: RouteService = Depends(get_service),
+) -> list[RoutePatternSummary]:
+    return await service.patterns(route_id, direction_id)
+
+
+@router.get(
     "/{route_id}/stops",
     summary="Ordered stops of a route",
-    description="The stop sequence of a representative trip of the route/direction.",
+    description="The selected pattern's stop sequence; defaults to the most-used pattern.",
     response_model=list[StopSummary],
     responses={404: {"model": ErrorResponse}},
 )
 async def route_stops(
     route_id: int,
     direction_id: int | None = Query(None, ge=0, le=1),
+    pattern_id: int | None = Query(None, ge=1),
     service: RouteService = Depends(get_service),
 ) -> list[StopSummary]:
-    return await service.ordered_stops(route_id, direction_id)
+    return await service.ordered_stops(route_id, direction_id, pattern_id)
 
 
 @router.get(
     "/{route_id}/shape",
     summary="Route polyline",
-    description="The route's shape as a GeoJSON LineString ([lon, lat] pairs) for map drawing.",
+    description="The selected pattern's GeoJSON LineString ([lon, lat] pairs).",
     response_model=ShapeGeoJson,
     responses={404: {"model": ErrorResponse}},
 )
 async def route_shape(
     route_id: int,
-    direction_id: int | None = Query(0, ge=0, le=1),
+    direction_id: int | None = Query(None, ge=0, le=1),
+    pattern_id: int | None = Query(None, ge=1),
     service: RouteService = Depends(get_service),
 ) -> ShapeGeoJson:
-    return await service.shape(route_id, direction_id)
+    return await service.shape(route_id, direction_id, pattern_id)
 
 
 @router.get(

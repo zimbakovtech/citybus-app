@@ -1,8 +1,7 @@
 """initial schema
 
-Executes the canonical DDL from database/sql/ verbatim, so the migrated schema
-is identical to the teaching/reference SQL by construction — there is a single
-source of DDL truth and nothing to drift.
+Executes an immutable snapshot of the original DDL. Current canonical SQL may
+evolve, but an existing revision must always build the same historical schema.
 
 Revision ID: 0001
 Revises:
@@ -18,8 +17,10 @@ down_revision = None
 branch_labels = None
 depends_on = None
 
-# backend/alembic/versions/ -> repo root -> database/sql/
-SQL_DIR = Path(__file__).resolve().parents[3] / "database" / "sql"
+# Immutable DDL snapshot owned by this revision.  Never point an existing
+# migration at database/sql: those files describe the current schema and are
+# expected to evolve as new revisions are added.
+SQL_DIR = Path(__file__).resolve().parents[1] / "sql" / "0001"
 SQL_FILES = ["00_extensions.sql", "01_schema.sql", "02_indexes.sql"]
 
 

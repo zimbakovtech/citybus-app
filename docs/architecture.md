@@ -43,8 +43,8 @@
    `stop_times` (LEAD window function) and runs the Connection Scan Algorithm
    in the service layer.
 4. **Realtime** — a background task interpolates vehicle positions along
-   active trips' schedules every ~2 s, appends to `vehicle_positions`, and
-   broadcasts JSON messages to WebSocket subscribers.
+   active trips' schedules every ~2 s, appends partitioned history, upserts the
+   current-state table, and broadcasts JSON messages to WebSocket subscribers.
 5. **Mobile** — the Flutter app renders all of it: search lists, route
    polylines on OpenStreetMap tiles, journey plans, and live moving markers.
 

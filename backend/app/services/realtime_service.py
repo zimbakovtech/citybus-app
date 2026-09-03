@@ -2,17 +2,18 @@
 
 Each tick finds every trip that is under way at the current (simulated) clock,
 interpolates the vehicle's position between the two stops it is traveling
-between, applies a slowly-drifting random delay, appends a row to
-vehicle_positions and returns the update messages to broadcast.
+between, applies a slowly-drifting random delay, appends a history row, upserts
+current state and returns the update messages to broadcast.
 """
 
 import logging
 import math
 import random
-from datetime import date, datetime, timedelta
+from datetime import UTC, date, datetime, timedelta
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.repositories.service_repository import ServiceRepository
 from app.repositories.vehicle_position_repository import VehiclePositionRepository
 
@@ -42,14 +43,22 @@ class RealtimeService:
         # per-vehicle delay state drifts between ticks (seeded: reproducible)
         self._rng = random.Random(42)
         self._delays: dict[str, int] = {}
+        self._partition_maintenance_date: date | None = None
 
     def _now(self) -> datetime:
         return type(self).now_override or datetime.now()
 
     async def tick(self) -> list[dict]:
-        """Advance the simulation one step. Writes vehicle_positions rows and
-        returns one 'vehicle_position' message dict per active vehicle."""
+        """Advance one step, storing history and current state atomically."""
         now = self._now()
+        utc_date = datetime.now(UTC).date()
+        if self._partition_maintenance_date != utc_date:
+            await self.positions.maintain_partitions(
+                utc_date,
+                settings.vehicle_history_retention_days,
+                settings.vehicle_partition_future_days,
+            )
+            self._partition_maintenance_date = utc_date
         now_s = int(
             timedelta(hours=now.hour, minutes=now.minute, seconds=now.second).total_seconds()
         )
@@ -84,7 +93,6 @@ class RealtimeService:
                     "trip_id": seg.trip_id,
                     "lat": lat,
                     "lon": lon,
-                    "geom": f"SRID=4326;POINT({lon} {lat})",
                     "delay_seconds": delay,
                     "current_stop_id": seg.next_stop_id,
                 }

@@ -19,6 +19,9 @@ class Trip(Base):
     shape_id: Mapped[int | None] = mapped_column(
         BigInteger, ForeignKey("shapes.id", ondelete="SET NULL")
     )
+    route_pattern_id: Mapped[int] = mapped_column(
+        BigInteger, ForeignKey("route_patterns.id", ondelete="RESTRICT")
+    )
     headsign: Mapped[str | None] = mapped_column(Text)
     direction_id: Mapped[int | None] = mapped_column(SmallInteger)
     block_id: Mapped[str | None] = mapped_column(Text)

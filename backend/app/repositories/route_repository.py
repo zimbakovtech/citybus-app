@@ -5,7 +5,7 @@ import json
 from sqlalchemy import Row, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models import Agency, Route, Shape, Stop, StopTime, Trip
+from app.models import Agency, Route, RoutePattern, RoutePatternStop, Shape, Stop, StopTime, Trip
 
 
 class RouteRepository:
@@ -33,44 +33,78 @@ class RouteRepository:
         result = await self.session.scalars(stmt.order_by(Route.id).limit(limit).offset(offset))
         return list(result), total or 0
 
-    async def _representative_trip_id(self, route_id: int, direction_id: int | None) -> int | None:
-        """The trip with the most stops for this route/direction — used as the
-        canonical stop sequence for display."""
+    async def get_pattern(self, route_id: int, pattern_id: int) -> RoutePattern | None:
+        return await self.session.scalar(
+            select(RoutePattern).where(
+                RoutePattern.id == pattern_id, RoutePattern.route_id == route_id
+            )
+        )
+
+    async def patterns(self, route_id: int, direction_id: int | None) -> list[Row]:
         stmt = (
-            select(Trip.id)
-            .join(StopTime, StopTime.trip_id == Trip.id)
-            .where(Trip.route_id == route_id)
-            .group_by(Trip.id)
-            .order_by(func.count().desc(), Trip.id)
+            select(
+                RoutePattern.id,
+                RoutePattern.direction_id,
+                func.cardinality(RoutePattern.stop_signature).label("stop_count"),
+                func.count(Trip.id).label("trip_count"),
+                RoutePattern.shape_id.is_not(None).label("shape_available"),
+            )
+            .join(Trip, Trip.route_pattern_id == RoutePattern.id)
+            .where(RoutePattern.route_id == route_id)
+            .group_by(RoutePattern.id)
+            .order_by(
+                RoutePattern.direction_id,
+                func.count(Trip.id).desc(),
+                func.cardinality(RoutePattern.stop_signature).desc(),
+                RoutePattern.id,
+            )
+        )
+        if direction_id is not None:
+            stmt = stmt.where(RoutePattern.direction_id == direction_id)
+        return list(await self.session.execute(stmt))
+
+    async def default_pattern_id(self, route_id: int, direction_id: int | None) -> int | None:
+        stmt = (
+            select(RoutePattern.id)
+            .join(Trip, Trip.route_pattern_id == RoutePattern.id)
+            .where(RoutePattern.route_id == route_id)
+            .group_by(RoutePattern.id)
+            .order_by(
+                func.count(Trip.id).desc(),
+                func.cardinality(RoutePattern.stop_signature).desc(),
+                RoutePattern.id,
+            )
             .limit(1)
         )
         if direction_id is not None:
-            stmt = stmt.where(Trip.direction_id == direction_id)
+            stmt = stmt.where(RoutePattern.direction_id == direction_id)
         return await self.session.scalar(stmt)
 
-    async def ordered_stops(self, route_id: int, direction_id: int | None) -> list[Row]:
-        trip_id = await self._representative_trip_id(route_id, direction_id)
-        if trip_id is None:
+    async def ordered_stops(self, pattern_id: int) -> list[Row]:
+        if pattern_id is None:
             return []
         result = await self.session.execute(
-            select(Stop.id, Stop.name, Stop.code, Stop.lat, Stop.lon, StopTime.stop_sequence)
-            .join(StopTime, StopTime.stop_id == Stop.id)
-            .where(StopTime.trip_id == trip_id)
-            .order_by(StopTime.stop_sequence)
+            select(
+                Stop.id,
+                Stop.name,
+                Stop.code,
+                Stop.lat,
+                Stop.lon,
+                RoutePatternStop.stop_order,
+            )
+            .join(RoutePatternStop, RoutePatternStop.stop_id == Stop.id)
+            .where(RoutePatternStop.pattern_id == pattern_id)
+            .order_by(RoutePatternStop.stop_order)
         )
         return list(result)
 
-    async def shape_geojson(self, route_id: int, direction_id: int | None) -> dict | None:
+    async def shape_geojson(self, pattern_id: int) -> dict | None:
         """The route's polyline as a GeoJSON geometry dict (via ST_AsGeoJSON)."""
-        stmt = (
+        geojson = await self.session.scalar(
             select(func.ST_AsGeoJSON(Shape.geom))
-            .join(Trip, Trip.shape_id == Shape.id)
-            .where(Trip.route_id == route_id, Shape.geom.is_not(None))
-            .limit(1)
+            .join(RoutePattern, RoutePattern.shape_id == Shape.id)
+            .where(RoutePattern.id == pattern_id, Shape.geom.is_not(None))
         )
-        if direction_id is not None:
-            stmt = stmt.where(Trip.direction_id == direction_id)
-        geojson = await self.session.scalar(stmt)
         return json.loads(geojson) if geojson else None
 
     async def trips_on_date(self, route_id: int, service_ids: list[int]) -> list[Row]:
