@@ -4,8 +4,9 @@ The schema models a city bus network in the shape of the
 [GTFS static specification](https://gtfs.org/documentation/schedule/reference/),
 normalized into relational tables. The canonical, commented DDL lives in
 [`database/sql/`](../database/sql) — `01_schema.sql` (tables) and
-`02_indexes.sql` (indexes). The Alembic initial migration executes those exact
-files, so the applied schema cannot drift from the reference DDL.
+`02_indexes.sql` (indexes). Alembic revision `0001` owns an immutable snapshot
+of the original schema; later revisions upgrade it incrementally to the
+canonical schema documented here.
 
 ## Grain
 
@@ -17,20 +18,24 @@ Everything else describes or aggregates around it:
   into the line riders know; `agency` owns routes.
 - `services` + `calendar` + `calendar_dates` say **on which dates** a trip runs.
 - `stops`, `shapes`/`shape_points` carry the **where** (PostGIS geometries).
-- `vehicle_positions` is an append-only log of simulated realtime telemetry.
+- `route_patterns` groups trips that share a direction, shape and ordered stop
+  sequence, so branches and short turns are represented explicitly.
+- `current_vehicle_positions` is the live state; `vehicle_position_history` is
+  the append-only, daily-partitioned telemetry log.
 
 ## Design decisions
 
 ### Surrogate keys, natural keys preserved
 
-Every table has a `bigint GENERATED ALWAYS AS IDENTITY` primary key, and the
-original GTFS string identifier is kept as a `UNIQUE` natural key
+GTFS entity tables have a `bigint GENERATED ALWAYS AS IDENTITY` primary key,
+while relationship tables use composite keys. The original GTFS string
+identifier is kept as a `UNIQUE` natural key
 (`gtfs_route_id`, `gtfs_stop_id`, …). Foreign keys reference the surrogate
 keys. Rationale:
 
 - 8-byte joins and index entries instead of arbitrary-length text.
-- GTFS ids are only unique *within one feed*; surrogate keys stay stable if a
-  feed is replaced.
+- GTFS ids are only unique *within one feed*. This project stores one active
+  feed and currently reallocates surrogate keys on a full feed reload.
 - The importer resolves string ids → surrogate ids via in-memory lookup maps,
   which demonstrates the surrogate-vs-natural-key distinction explicitly.
 
@@ -63,25 +68,27 @@ not a 20-row aggregation per request.
 
 ### PostGIS usage
 
-- `stops.geom` / `vehicle_positions.geom` are `geometry(Point, 4326)`;
+- Point geometry is a stored generated column derived from `lon`/`lat`, so the
+  scalar coordinates and PostGIS value cannot drift.
+- `stops.geom` and both vehicle-position geometries are `geometry(Point, 4326)`;
   `shapes.geom` is `geometry(LineString, 4326)`. WGS84 throughout; note
   PostGIS points are **(X, Y) = (lon, lat)**.
 - *Nearby stops* filters with `ST_DWithin` on `geom::geography` (correct
-  meters on the ellipsoid) and orders with the KNN operator `<->`, both served
-  by the GiST index.
+  meters on the ellipsoid) and orders with the geometry KNN operator `<->`.
+  Separate matching GiST indexes serve the geography filter and geometry order.
 - The planner snaps free coordinates to the nearest stop with a KNN lookup.
 
 ### Indexing strategy
 
 | Index | Serves |
 |---|---|
-| GiST on all `geom` columns | `ST_DWithin` radius filters, KNN ordering |
+| GiST on `stops.geom` and `(stops.geom::geography)` | KNN ordering and meter-based `ST_DWithin` filters |
 | GIN `gin_trgm_ops` on `stops.name`, `routes.short_name`/`long_name` | fuzzy `ILIKE '%…%'` search |
 | B-tree `(stop_id, departure_time)` on `stop_times` | departures at a stop, time-windowed |
-| B-tree `(trip_id, stop_sequence)` on `stop_times` | a trip's ordered stops; the planner's connection scan |
-| B-tree `(service_id, date)` on `calendar_dates` | active-service resolution |
-| B-tree on every remaining FK | joins and `ON DELETE` checks |
-| B-tree `(recorded_at DESC)` on `vehicle_positions` | latest-position snapshots |
+| `stop_times` primary key `(trip_id, stop_sequence)` | a trip's ordered stops; the planner's connection scan |
+| Unique `(service_id, date)` on `calendar_dates` | active-service resolution |
+| B-tree `(route_id, service_id)` on `trips` | route/date trip listings |
+| B-tree `(vehicle_id, recorded_at DESC)` on history | per-vehicle telemetry history |
 
 ### Constraints
 
@@ -91,6 +98,21 @@ the GTFS enums (`exception_type IN (1,2)`, `pickup_type IN (0,1,2,3)`, …),
 and every FK declares a deliberate `ON DELETE` policy: `CASCADE` down the
 composition hierarchy (route → trips → stop_times), `SET NULL` for optional
 references (trip → shape, vehicle → trip).
+
+## Route patterns
+
+A pattern is unique by route, direction, shape and ordered stop IDs. Trips on
+different service calendars or departure times reuse the same pattern. The
+route stops and shape endpoints choose the most-used matching pattern by
+default and also accept an explicit `pattern_id` for branch-aware clients.
+
+## Realtime storage
+
+Every simulation tick appends to `vehicle_position_history` and upserts
+`current_vehicle_positions` in one transaction. History is partitioned by UTC
+day; maintenance retains today plus the previous 29 days, precreates seven
+future partitions, and drops expired partitions. Live snapshots query only the
+small current-state table and keep the existing 60-second recency filter.
 
 ## Active-service resolution
 

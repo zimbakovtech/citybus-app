@@ -12,6 +12,11 @@ class Route(Base):
         CheckConstraint(
             "short_name IS NOT NULL OR long_name IS NOT NULL", name="routes_name_present"
         ),
+        CheckConstraint("color IS NULL OR color ~ '^[0-9A-Fa-f]{6}$'", name="routes_color_hex"),
+        CheckConstraint(
+            "text_color IS NULL OR text_color ~ '^[0-9A-Fa-f]{6}$'",
+            name="routes_text_color_hex",
+        ),
     )
 
     id: Mapped[int] = mapped_column(BigInteger, Identity(always=True), primary_key=True)

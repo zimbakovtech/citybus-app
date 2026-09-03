@@ -2,8 +2,8 @@
 """Standalone vehicle simulator (optional — the API runs the same loop as a
 background task when REALTIME_ENABLED=true).
 
-Writes simulated vehicle positions to the database every tick; useful for
-populating vehicle_positions without running the API.
+Writes simulated vehicle history and upserts current state every tick; useful
+for populating realtime data without running the API.
 
 Usage: python scripts/simulate_realtime.py [--ticks N]
 """

@@ -20,6 +20,7 @@ from app.core.config import settings  # noqa: E402
 from app.core.database import SessionFactory, engine  # noqa: E402
 from app.core.logging import configure_logging  # noqa: E402
 from app.services.gtfs_import_service import GtfsImportService  # noqa: E402
+from app.services.gtfs_validation import GtfsValidationError  # noqa: E402
 
 logger = logging.getLogger("import_gtfs")
 
@@ -27,7 +28,13 @@ logger = logging.getLogger("import_gtfs")
 async def main(feed_path: str) -> None:
     async with SessionFactory() as session:
         service = GtfsImportService(session)
-        counts = await service.import_feed(feed_path)
+        try:
+            counts = await service.import_feed(feed_path)
+        except GtfsValidationError as exc:
+            logger.error("%s", exc)
+            for issue in exc.issues:
+                logger.error("  %s", issue)
+            raise SystemExit(2) from exc
     await engine.dispose()
 
     total = sum(counts.values())

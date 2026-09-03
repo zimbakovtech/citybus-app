@@ -18,6 +18,15 @@ class StopTime(Base):
     __table_args__ = (
         CheckConstraint("pickup_type IN (0,1,2,3)", name="stop_times_pickup_type_check"),
         CheckConstraint("drop_off_type IN (0,1,2,3)", name="stop_times_drop_off_type_check"),
+        CheckConstraint("stop_sequence > 0", name="stop_times_sequence_positive"),
+        CheckConstraint("arrival_time >= interval '0'", name="stop_times_arrival_nonnegative"),
+        CheckConstraint(
+            "departure_time >= arrival_time", name="stop_times_departure_after_arrival"
+        ),
+        CheckConstraint(
+            "shape_dist_traveled IS NULL OR shape_dist_traveled >= 0",
+            name="stop_times_distance_nonnegative",
+        ),
     )
 
     trip_id: Mapped[int] = mapped_column(

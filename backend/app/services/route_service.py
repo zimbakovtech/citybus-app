@@ -4,12 +4,18 @@ from datetime import date
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.exceptions import NotFoundError
+from app.core.exceptions import InvalidRequestError, NotFoundError
 from app.core.gtfs_time import format_interval
 from app.repositories.route_repository import RouteRepository
 from app.repositories.service_repository import ServiceRepository
 from app.schemas.common import Page
-from app.schemas.route import RouteDetail, RouteSummary, ShapeGeoJson, TripSummary
+from app.schemas.route import (
+    RouteDetail,
+    RoutePatternSummary,
+    RouteSummary,
+    ShapeGeoJson,
+    TripSummary,
+)
 from app.schemas.stop import StopSummary
 
 
@@ -43,16 +49,52 @@ class RouteService:
             agency_name=row.agency_name,
         )
 
-    async def ordered_stops(self, route_id: int, direction_id: int | None) -> list[StopSummary]:
+    async def patterns(self, route_id: int, direction_id: int | None) -> list[RoutePatternSummary]:
         if await self.routes.get(route_id) is None:
             raise NotFoundError("route", route_id)
-        rows = await self.routes.ordered_stops(route_id, direction_id)
+        rows = await self.routes.patterns(route_id, direction_id)
+        return [RoutePatternSummary.model_validate(row, from_attributes=True) for row in rows]
+
+    async def _resolve_pattern_id(
+        self,
+        route_id: int,
+        direction_id: int | None,
+        pattern_id: int | None,
+    ) -> int | None:
+        if pattern_id is None:
+            return await self.routes.default_pattern_id(route_id, direction_id)
+        pattern = await self.routes.get_pattern(route_id, pattern_id)
+        if pattern is None:
+            raise NotFoundError("route pattern", pattern_id)
+        if direction_id is not None and pattern.direction_id != direction_id:
+            raise InvalidRequestError(
+                f"route pattern {pattern_id} does not have direction_id={direction_id}"
+            )
+        return pattern.id
+
+    async def ordered_stops(
+        self, route_id: int, direction_id: int | None, pattern_id: int | None
+    ) -> list[StopSummary]:
+        if await self.routes.get(route_id) is None:
+            raise NotFoundError("route", route_id)
+        resolved_pattern_id = await self._resolve_pattern_id(route_id, direction_id, pattern_id)
+        if resolved_pattern_id is None:
+            return []
+        rows = await self.routes.ordered_stops(resolved_pattern_id)
         return [StopSummary.model_validate(r, from_attributes=True) for r in rows]
 
-    async def shape(self, route_id: int, direction_id: int | None) -> ShapeGeoJson:
+    async def shape(
+        self, route_id: int, direction_id: int | None, pattern_id: int | None
+    ) -> ShapeGeoJson:
         if await self.routes.get(route_id) is None:
             raise NotFoundError("route", route_id)
-        geojson = await self.routes.shape_geojson(route_id, direction_id)
+        effective_direction = direction_id if pattern_id is not None else direction_id or 0
+        resolved_pattern_id = await self._resolve_pattern_id(
+            route_id, effective_direction, pattern_id
+        )
+        if resolved_pattern_id is None:
+            raise NotFoundError("shape for route", route_id)
+        geojson = await self.routes.shape_geojson(resolved_pattern_id)
         if geojson is None:
             raise NotFoundError("shape for route", route_id)
         return ShapeGeoJson(**geojson)
