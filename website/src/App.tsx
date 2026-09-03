@@ -3,6 +3,7 @@ import { Hero } from './components/Hero'
 import { Features } from './components/Features'
 import { Screenshots } from './components/Screenshots'
 import { Architecture } from './components/Architecture'
+import { Database } from './components/Database'
 import { Api } from './components/Api'
 import { Footer } from './components/Footer'
 
@@ -21,6 +22,7 @@ export default function App() {
         <Features />
         <Screenshots />
         <Architecture />
+        <Database />
         <Api />
       </main>
       <Footer />
