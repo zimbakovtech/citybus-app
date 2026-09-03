@@ -4,5 +4,6 @@ export const NAV_LINKS = [
   { href: '#features', label: 'Features' },
   { href: '#app', label: 'App' },
   { href: '#architecture', label: 'Architecture' },
+  { href: '#database', label: 'Database' },
   { href: '#api', label: 'API' },
 ] as const
