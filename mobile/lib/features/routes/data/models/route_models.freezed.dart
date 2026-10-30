@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'route_models.dart';
@@ -9,6 +9,7 @@ part of 'route_models.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $RouteSummaryCopyWith<RouteSummary> get copyWith => _$RouteSummaryCopyWithImpl<R
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RouteSummary&&(identical(other.id, id) || other.id == id)&&(identical(other.shortName, shortName) || other.shortName == shortName)&&(identical(other.longName, longName) || other.longName == longName)&&(identical(other.color, color) || other.color == color));
+  final _this = this as RouteSummary;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RouteSummary&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.shortName, _this.shortName) || other.shortName == _this.shortName)&&(identical(other.longName, _this.longName) || other.longName == _this.longName)&&(identical(other.color, _this.color) || other.color == _this.color));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,shortName,longName,color);
+int get hashCode {
+  final _this = this as RouteSummary;
+  return Object.hash(runtimeType,_this.id,_this.shortName,_this.longName,_this.color);
+}
 
 @override
 String toString() {
-  return 'RouteSummary(id: $id, shortName: $shortName, longName: $longName, color: $color)';
+  final _this = this as RouteSummary;
+  return 'RouteSummary(id: ${_this.id}, shortName: ${_this.shortName}, longName: ${_this.longName}, color: ${_this.color})';
 }
 
 
@@ -66,7 +72,7 @@ class _$RouteSummaryCopyWithImpl<$Res>
 /// Create a copy of RouteSummary
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? shortName = freezed,Object? longName = freezed,Object? color = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(RouteSummary(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,shortName: freezed == shortName ? _self.shortName : shortName // ignore: cast_nullable_to_non_nullable
 as String?,longName: freezed == longName ? _self.longName : longName // ignore: cast_nullable_to_non_nullable
@@ -233,16 +239,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RouteSummary&&(identical(other.id, id) || other.id == id)&&(identical(other.shortName, shortName) || other.shortName == shortName)&&(identical(other.longName, longName) || other.longName == longName)&&(identical(other.color, color) || other.color == color));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _RouteSummary&&(identical(other.id, id) || other.id == id)&&(identical(other.shortName, shortName) || other.shortName == shortName)&&(identical(other.longName, longName) || other.longName == longName)&&(identical(other.color, color) || other.color == color));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,shortName,longName,color);
+int get hashCode {
+    return Object.hash(runtimeType,id,shortName,longName,color);
+}
 
 @override
 String toString() {
-  return 'RouteSummary(id: $id, shortName: $shortName, longName: $longName, color: $color)';
+    return 'RouteSummary(id: $id, shortName: $shortName, longName: $longName, color: $color)';
 }
 
 
@@ -300,16 +308,21 @@ $RouteDetailCopyWith<RouteDetail> get copyWith => _$RouteDetailCopyWithImpl<Rout
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RouteDetail&&(identical(other.id, id) || other.id == id)&&(identical(other.shortName, shortName) || other.shortName == shortName)&&(identical(other.longName, longName) || other.longName == longName)&&(identical(other.color, color) || other.color == color)&&(identical(other.gtfsRouteId, gtfsRouteId) || other.gtfsRouteId == gtfsRouteId)&&(identical(other.routeType, routeType) || other.routeType == routeType)&&(identical(other.textColor, textColor) || other.textColor == textColor)&&(identical(other.agencyName, agencyName) || other.agencyName == agencyName));
+  final _this = this as RouteDetail;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RouteDetail&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.shortName, _this.shortName) || other.shortName == _this.shortName)&&(identical(other.longName, _this.longName) || other.longName == _this.longName)&&(identical(other.color, _this.color) || other.color == _this.color)&&(identical(other.gtfsRouteId, _this.gtfsRouteId) || other.gtfsRouteId == _this.gtfsRouteId)&&(identical(other.routeType, _this.routeType) || other.routeType == _this.routeType)&&(identical(other.textColor, _this.textColor) || other.textColor == _this.textColor)&&(identical(other.agencyName, _this.agencyName) || other.agencyName == _this.agencyName));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,shortName,longName,color,gtfsRouteId,routeType,textColor,agencyName);
+int get hashCode {
+  final _this = this as RouteDetail;
+  return Object.hash(runtimeType,_this.id,_this.shortName,_this.longName,_this.color,_this.gtfsRouteId,_this.routeType,_this.textColor,_this.agencyName);
+}
 
 @override
 String toString() {
-  return 'RouteDetail(id: $id, shortName: $shortName, longName: $longName, color: $color, gtfsRouteId: $gtfsRouteId, routeType: $routeType, textColor: $textColor, agencyName: $agencyName)';
+  final _this = this as RouteDetail;
+  return 'RouteDetail(id: ${_this.id}, shortName: ${_this.shortName}, longName: ${_this.longName}, color: ${_this.color}, gtfsRouteId: ${_this.gtfsRouteId}, routeType: ${_this.routeType}, textColor: ${_this.textColor}, agencyName: ${_this.agencyName})';
 }
 
 
@@ -338,7 +351,7 @@ class _$RouteDetailCopyWithImpl<$Res>
 /// Create a copy of RouteDetail
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? shortName = freezed,Object? longName = freezed,Object? color = freezed,Object? gtfsRouteId = null,Object? routeType = null,Object? textColor = freezed,Object? agencyName = null,}) {
-  return _then(_self.copyWith(
+  return _then(RouteDetail(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,shortName: freezed == shortName ? _self.shortName : shortName // ignore: cast_nullable_to_non_nullable
 as String?,longName: freezed == longName ? _self.longName : longName // ignore: cast_nullable_to_non_nullable
@@ -513,16 +526,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RouteDetail&&(identical(other.id, id) || other.id == id)&&(identical(other.shortName, shortName) || other.shortName == shortName)&&(identical(other.longName, longName) || other.longName == longName)&&(identical(other.color, color) || other.color == color)&&(identical(other.gtfsRouteId, gtfsRouteId) || other.gtfsRouteId == gtfsRouteId)&&(identical(other.routeType, routeType) || other.routeType == routeType)&&(identical(other.textColor, textColor) || other.textColor == textColor)&&(identical(other.agencyName, agencyName) || other.agencyName == agencyName));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _RouteDetail&&(identical(other.id, id) || other.id == id)&&(identical(other.shortName, shortName) || other.shortName == shortName)&&(identical(other.longName, longName) || other.longName == longName)&&(identical(other.color, color) || other.color == color)&&(identical(other.gtfsRouteId, gtfsRouteId) || other.gtfsRouteId == gtfsRouteId)&&(identical(other.routeType, routeType) || other.routeType == routeType)&&(identical(other.textColor, textColor) || other.textColor == textColor)&&(identical(other.agencyName, agencyName) || other.agencyName == agencyName));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,shortName,longName,color,gtfsRouteId,routeType,textColor,agencyName);
+int get hashCode {
+    return Object.hash(runtimeType,id,shortName,longName,color,gtfsRouteId,routeType,textColor,agencyName);
+}
 
 @override
 String toString() {
-  return 'RouteDetail(id: $id, shortName: $shortName, longName: $longName, color: $color, gtfsRouteId: $gtfsRouteId, routeType: $routeType, textColor: $textColor, agencyName: $agencyName)';
+    return 'RouteDetail(id: $id, shortName: $shortName, longName: $longName, color: $color, gtfsRouteId: $gtfsRouteId, routeType: $routeType, textColor: $textColor, agencyName: $agencyName)';
 }
 
 
@@ -584,16 +599,21 @@ $RouteShapeCopyWith<RouteShape> get copyWith => _$RouteShapeCopyWithImpl<RouteSh
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RouteShape&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other.coordinates, coordinates));
+  final _this = this as RouteShape;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RouteShape&&(identical(other.type, _this.type) || other.type == _this.type)&&const DeepCollectionEquality().equals(other.coordinates, _this.coordinates));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,type,const DeepCollectionEquality().hash(coordinates));
+int get hashCode {
+  final _this = this as RouteShape;
+  return Object.hash(runtimeType,_this.type,const DeepCollectionEquality().hash(_this.coordinates));
+}
 
 @override
 String toString() {
-  return 'RouteShape(type: $type, coordinates: $coordinates)';
+  final _this = this as RouteShape;
+  return 'RouteShape(type: ${_this.type}, coordinates: ${_this.coordinates})';
 }
 
 
@@ -622,7 +642,7 @@ class _$RouteShapeCopyWithImpl<$Res>
 /// Create a copy of RouteShape
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? type = null,Object? coordinates = null,}) {
-  return _then(_self.copyWith(
+  return _then(RouteShape(
 type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,coordinates: null == coordinates ? _self.coordinates : coordinates // ignore: cast_nullable_to_non_nullable
 as List<List<double>>,
@@ -766,7 +786,7 @@ return $default(_that.type,_that.coordinates);case _:
 @JsonSerializable()
 
 class _RouteShape implements RouteShape {
-  const _RouteShape({required this.type, required final  List<List<double>> coordinates}): _coordinates = coordinates;
+  const _RouteShape({required this.type, required  List<List<double>> coordinates}): _coordinates = coordinates;
   factory _RouteShape.fromJson(Map<String, dynamic> json) => _$RouteShapeFromJson(json);
 
 @override final  String type;
@@ -791,16 +811,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RouteShape&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other._coordinates, _coordinates));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _RouteShape&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other.coordinates, _coordinates));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,type,const DeepCollectionEquality().hash(_coordinates));
+int get hashCode {
+    return Object.hash(runtimeType,type,const DeepCollectionEquality().hash(_coordinates));
+}
 
 @override
 String toString() {
-  return 'RouteShape(type: $type, coordinates: $coordinates)';
+    return 'RouteShape(type: $type, coordinates: $coordinates)';
 }
 
 
@@ -856,16 +878,21 @@ $TripSummaryCopyWith<TripSummary> get copyWith => _$TripSummaryCopyWithImpl<Trip
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TripSummary&&(identical(other.id, id) || other.id == id)&&(identical(other.headsign, headsign) || other.headsign == headsign)&&(identical(other.directionId, directionId) || other.directionId == directionId)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt));
+  final _this = this as TripSummary;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TripSummary&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.headsign, _this.headsign) || other.headsign == _this.headsign)&&(identical(other.directionId, _this.directionId) || other.directionId == _this.directionId)&&(identical(other.startsAt, _this.startsAt) || other.startsAt == _this.startsAt)&&(identical(other.endsAt, _this.endsAt) || other.endsAt == _this.endsAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,headsign,directionId,startsAt,endsAt);
+int get hashCode {
+  final _this = this as TripSummary;
+  return Object.hash(runtimeType,_this.id,_this.headsign,_this.directionId,_this.startsAt,_this.endsAt);
+}
 
 @override
 String toString() {
-  return 'TripSummary(id: $id, headsign: $headsign, directionId: $directionId, startsAt: $startsAt, endsAt: $endsAt)';
+  final _this = this as TripSummary;
+  return 'TripSummary(id: ${_this.id}, headsign: ${_this.headsign}, directionId: ${_this.directionId}, startsAt: ${_this.startsAt}, endsAt: ${_this.endsAt})';
 }
 
 
@@ -894,7 +921,7 @@ class _$TripSummaryCopyWithImpl<$Res>
 /// Create a copy of TripSummary
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? headsign = freezed,Object? directionId = freezed,Object? startsAt = null,Object? endsAt = null,}) {
-  return _then(_self.copyWith(
+  return _then(TripSummary(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,headsign: freezed == headsign ? _self.headsign : headsign // ignore: cast_nullable_to_non_nullable
 as String?,directionId: freezed == directionId ? _self.directionId : directionId // ignore: cast_nullable_to_non_nullable
@@ -1063,16 +1090,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TripSummary&&(identical(other.id, id) || other.id == id)&&(identical(other.headsign, headsign) || other.headsign == headsign)&&(identical(other.directionId, directionId) || other.directionId == directionId)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _TripSummary&&(identical(other.id, id) || other.id == id)&&(identical(other.headsign, headsign) || other.headsign == headsign)&&(identical(other.directionId, directionId) || other.directionId == directionId)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,headsign,directionId,startsAt,endsAt);
+int get hashCode {
+    return Object.hash(runtimeType,id,headsign,directionId,startsAt,endsAt);
+}
 
 @override
 String toString() {
-  return 'TripSummary(id: $id, headsign: $headsign, directionId: $directionId, startsAt: $startsAt, endsAt: $endsAt)';
+    return 'TripSummary(id: $id, headsign: $headsign, directionId: $directionId, startsAt: $startsAt, endsAt: $endsAt)';
 }
 
 
@@ -1131,16 +1160,21 @@ $TripStopTimeCopyWith<TripStopTime> get copyWith => _$TripStopTimeCopyWithImpl<T
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TripStopTime&&(identical(other.stopSequence, stopSequence) || other.stopSequence == stopSequence)&&(identical(other.stop, stop) || other.stop == stop)&&(identical(other.arrivalTime, arrivalTime) || other.arrivalTime == arrivalTime)&&(identical(other.departureTime, departureTime) || other.departureTime == departureTime));
+  final _this = this as TripStopTime;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TripStopTime&&(identical(other.stopSequence, _this.stopSequence) || other.stopSequence == _this.stopSequence)&&(identical(other.stop, _this.stop) || other.stop == _this.stop)&&(identical(other.arrivalTime, _this.arrivalTime) || other.arrivalTime == _this.arrivalTime)&&(identical(other.departureTime, _this.departureTime) || other.departureTime == _this.departureTime));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,stopSequence,stop,arrivalTime,departureTime);
+int get hashCode {
+  final _this = this as TripStopTime;
+  return Object.hash(runtimeType,_this.stopSequence,_this.stop,_this.arrivalTime,_this.departureTime);
+}
 
 @override
 String toString() {
-  return 'TripStopTime(stopSequence: $stopSequence, stop: $stop, arrivalTime: $arrivalTime, departureTime: $departureTime)';
+  final _this = this as TripStopTime;
+  return 'TripStopTime(stopSequence: ${_this.stopSequence}, stop: ${_this.stop}, arrivalTime: ${_this.arrivalTime}, departureTime: ${_this.departureTime})';
 }
 
 
@@ -1169,7 +1203,7 @@ class _$TripStopTimeCopyWithImpl<$Res>
 /// Create a copy of TripStopTime
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? stopSequence = null,Object? stop = null,Object? arrivalTime = null,Object? departureTime = null,}) {
-  return _then(_self.copyWith(
+  return _then(TripStopTime(
 stopSequence: null == stopSequence ? _self.stopSequence : stopSequence // ignore: cast_nullable_to_non_nullable
 as int,stop: null == stop ? _self.stop : stop // ignore: cast_nullable_to_non_nullable
 as StopSummary,arrivalTime: null == arrivalTime ? _self.arrivalTime : arrivalTime // ignore: cast_nullable_to_non_nullable
@@ -1345,16 +1379,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TripStopTime&&(identical(other.stopSequence, stopSequence) || other.stopSequence == stopSequence)&&(identical(other.stop, stop) || other.stop == stop)&&(identical(other.arrivalTime, arrivalTime) || other.arrivalTime == arrivalTime)&&(identical(other.departureTime, departureTime) || other.departureTime == departureTime));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _TripStopTime&&(identical(other.stopSequence, stopSequence) || other.stopSequence == stopSequence)&&(identical(other.stop, stop) || other.stop == stop)&&(identical(other.arrivalTime, arrivalTime) || other.arrivalTime == arrivalTime)&&(identical(other.departureTime, departureTime) || other.departureTime == departureTime));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,stopSequence,stop,arrivalTime,departureTime);
+int get hashCode {
+    return Object.hash(runtimeType,stopSequence,stop,arrivalTime,departureTime);
+}
 
 @override
 String toString() {
-  return 'TripStopTime(stopSequence: $stopSequence, stop: $stop, arrivalTime: $arrivalTime, departureTime: $departureTime)';
+    return 'TripStopTime(stopSequence: $stopSequence, stop: $stop, arrivalTime: $arrivalTime, departureTime: $departureTime)';
 }
 
 
@@ -1421,16 +1457,21 @@ $TripDetailCopyWith<TripDetail> get copyWith => _$TripDetailCopyWithImpl<TripDet
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TripDetail&&(identical(other.id, id) || other.id == id)&&(identical(other.gtfsTripId, gtfsTripId) || other.gtfsTripId == gtfsTripId)&&(identical(other.route, route) || other.route == route)&&(identical(other.headsign, headsign) || other.headsign == headsign)&&(identical(other.directionId, directionId) || other.directionId == directionId)&&const DeepCollectionEquality().equals(other.stopTimes, stopTimes));
+  final _this = this as TripDetail;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TripDetail&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.gtfsTripId, _this.gtfsTripId) || other.gtfsTripId == _this.gtfsTripId)&&(identical(other.route, _this.route) || other.route == _this.route)&&(identical(other.headsign, _this.headsign) || other.headsign == _this.headsign)&&(identical(other.directionId, _this.directionId) || other.directionId == _this.directionId)&&const DeepCollectionEquality().equals(other.stopTimes, _this.stopTimes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,gtfsTripId,route,headsign,directionId,const DeepCollectionEquality().hash(stopTimes));
+int get hashCode {
+  final _this = this as TripDetail;
+  return Object.hash(runtimeType,_this.id,_this.gtfsTripId,_this.route,_this.headsign,_this.directionId,const DeepCollectionEquality().hash(_this.stopTimes));
+}
 
 @override
 String toString() {
-  return 'TripDetail(id: $id, gtfsTripId: $gtfsTripId, route: $route, headsign: $headsign, directionId: $directionId, stopTimes: $stopTimes)';
+  final _this = this as TripDetail;
+  return 'TripDetail(id: ${_this.id}, gtfsTripId: ${_this.gtfsTripId}, route: ${_this.route}, headsign: ${_this.headsign}, directionId: ${_this.directionId}, stopTimes: ${_this.stopTimes})';
 }
 
 
@@ -1459,7 +1500,7 @@ class _$TripDetailCopyWithImpl<$Res>
 /// Create a copy of TripDetail
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? gtfsTripId = null,Object? route = null,Object? headsign = freezed,Object? directionId = freezed,Object? stopTimes = null,}) {
-  return _then(_self.copyWith(
+  return _then(TripDetail(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,gtfsTripId: null == gtfsTripId ? _self.gtfsTripId : gtfsTripId // ignore: cast_nullable_to_non_nullable
 as String,route: null == route ? _self.route : route // ignore: cast_nullable_to_non_nullable
@@ -1616,7 +1657,7 @@ return $default(_that.id,_that.gtfsTripId,_that.route,_that.headsign,_that.direc
 @JsonSerializable()
 
 class _TripDetail implements TripDetail {
-  const _TripDetail({required this.id, required this.gtfsTripId, required this.route, this.headsign, this.directionId, required final  List<TripStopTime> stopTimes}): _stopTimes = stopTimes;
+  const _TripDetail({required this.id, required this.gtfsTripId, required this.route, this.headsign, this.directionId, required  List<TripStopTime> stopTimes}): _stopTimes = stopTimes;
   factory _TripDetail.fromJson(Map<String, dynamic> json) => _$TripDetailFromJson(json);
 
 @override final  int id;
@@ -1645,16 +1686,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TripDetail&&(identical(other.id, id) || other.id == id)&&(identical(other.gtfsTripId, gtfsTripId) || other.gtfsTripId == gtfsTripId)&&(identical(other.route, route) || other.route == route)&&(identical(other.headsign, headsign) || other.headsign == headsign)&&(identical(other.directionId, directionId) || other.directionId == directionId)&&const DeepCollectionEquality().equals(other._stopTimes, _stopTimes));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _TripDetail&&(identical(other.id, id) || other.id == id)&&(identical(other.gtfsTripId, gtfsTripId) || other.gtfsTripId == gtfsTripId)&&(identical(other.route, route) || other.route == route)&&(identical(other.headsign, headsign) || other.headsign == headsign)&&(identical(other.directionId, directionId) || other.directionId == directionId)&&const DeepCollectionEquality().equals(other.stopTimes, _stopTimes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,gtfsTripId,route,headsign,directionId,const DeepCollectionEquality().hash(_stopTimes));
+int get hashCode {
+    return Object.hash(runtimeType,id,gtfsTripId,route,headsign,directionId,const DeepCollectionEquality().hash(_stopTimes));
+}
 
 @override
 String toString() {
-  return 'TripDetail(id: $id, gtfsTripId: $gtfsTripId, route: $route, headsign: $headsign, directionId: $directionId, stopTimes: $stopTimes)';
+    return 'TripDetail(id: $id, gtfsTripId: $gtfsTripId, route: $route, headsign: $headsign, directionId: $directionId, stopTimes: $stopTimes)';
 }
 
 

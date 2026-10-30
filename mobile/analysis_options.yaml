@@ -4,12 +4,14 @@ analyzer:
   exclude:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
+    - build/**
+    - android/**
+    - ios/**
 
 linter:
   rules:
     unawaited_futures: true
     avoid_void_async: true
-    unnecessary_await_in_return: true
     only_throw_errors: true
     always_declare_return_types: true
     avoid_dynamic_calls: true
