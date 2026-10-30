@@ -1,3 +1,5 @@
+import { asset } from '../lib/constants'
+
 type Shot = {
   src: string
   title: string
@@ -7,31 +9,31 @@ type Shot = {
 
 const SHOTS: Shot[] = [
   {
-    src: '/screenshots/stops.webp',
+    src: asset('screenshots/stops.webp'),
     title: 'Stops',
     caption: 'Search and nearby tabs',
     alt: 'Stops screen with search field and a list of stops in Skopje',
   },
   {
-    src: '/screenshots/routes.webp',
+    src: asset('screenshots/routes.webp'),
     title: 'Routes',
     caption: 'All lines at a glance',
     alt: 'Routes screen listing the bus lines',
   },
   {
-    src: '/screenshots/stop_lines.webp',
+    src: asset('screenshots/stop_lines.webp'),
     title: 'Stop detail',
     caption: 'Serving lines & departures',
     alt: 'Stop detail screen with serving lines and upcoming departures',
   },
   {
-    src: '/screenshots/planner.webp',
+    src: asset('screenshots/planner.webp'),
     title: 'Planner',
     caption: 'Transfer-aware journeys',
     alt: 'Journey planner screen showing a planned trip with legs',
   },
   {
-    src: '/screenshots/live.webp',
+    src: asset('screenshots/live.webp'),
     title: 'Live',
     caption: 'Vehicles in realtime',
     alt: 'Live map screen with simulated vehicle positions',
