@@ -69,8 +69,8 @@ class _RouteDetailPageState extends ConsumerState<RouteDetailPage>
                 child: Text(
                   route.longName!,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ),
             SegmentedTabBar(
@@ -120,8 +120,9 @@ class _RouteDetailPageState extends ConsumerState<RouteDetailPage>
                                   child: DecoratedBox(
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color:
-                                          Theme.of(context).colorScheme.surface,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .surface,
                                       border: Border.all(
                                         color: routeColor(route.color),
                                         width: 3,

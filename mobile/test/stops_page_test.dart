@@ -7,10 +7,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'fakes.dart';
 
 void main() {
-  testWidgets('StopsPage lists search results from the repository', (tester) async {
+  testWidgets('StopsPage lists search results from the repository', (
+    tester,
+  ) async {
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [stopsRepositoryProvider.overrideWithValue(FakeStopsRepository())],
+        overrides: [
+          stopsRepositoryProvider.overrideWithValue(FakeStopsRepository()),
+        ],
         child: const MaterialApp(home: StopsPage()),
       ),
     );

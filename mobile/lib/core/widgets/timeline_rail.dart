@@ -38,9 +38,7 @@ class TimelineRail extends StatelessWidget {
             width: dotSize,
             height: dotSize,
             decoration: BoxDecoration(
-              color: emphasized
-                  ? color
-                  : Theme.of(context).colorScheme.surface,
+              color: emphasized ? color : Theme.of(context).colorScheme.surface,
               border: Border.all(color: color, width: 2),
               borderRadius: BorderRadius.circular(4),
             ),

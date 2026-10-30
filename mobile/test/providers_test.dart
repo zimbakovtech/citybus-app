@@ -8,11 +8,16 @@ void main() {
   group('stopSearchResultsProvider', () {
     test('returns all stops for an empty query and filters on text', () async {
       final container = ProviderContainer(
-        overrides: [stopsRepositoryProvider.overrideWithValue(FakeStopsRepository())],
+        overrides: [
+          stopsRepositoryProvider.overrideWithValue(FakeStopsRepository()),
+        ],
       );
       addTearDown(container.dispose);
 
-      expect(await container.read(stopSearchResultsProvider.future), hasLength(2));
+      expect(
+        await container.read(stopSearchResultsProvider.future),
+        hasLength(2),
+      );
 
       container.read(stopSearchQueryProvider.notifier).set('plostad');
       final filtered = await container.read(stopSearchResultsProvider.future);

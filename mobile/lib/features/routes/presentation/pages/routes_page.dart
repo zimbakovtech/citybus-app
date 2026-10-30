@@ -49,8 +49,10 @@ class RoutesPage extends ConsumerWidget {
                         icon: CupertinoIcons.search,
                       )
                     : ListView.separated(
-                        padding: Insets.page
-                            .copyWith(top: Insets.sm, bottom: Insets.xl),
+                        padding: Insets.page.copyWith(
+                          top: Insets.sm,
+                          bottom: Insets.xl,
+                        ),
                         itemCount: routes.length,
                         separatorBuilder: (_, _) =>
                             const SizedBox(height: Insets.md),
@@ -69,9 +71,7 @@ class RoutesPage extends ConsumerWidget {
                               ),
                               subtitle: Text(
                                 'Line ${route.shortName}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
+                                style: Theme.of(context).textTheme.bodySmall
                                     ?.copyWith(
                                       color: Theme.of(context)
                                           .colorScheme

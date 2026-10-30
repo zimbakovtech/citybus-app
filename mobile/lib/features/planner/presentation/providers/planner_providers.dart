@@ -64,10 +64,10 @@ class PlannerForm extends Notifier<PlannerFormState> {
 
   /// Swap origin and destination (either may still be unset).
   void swap() => state = PlannerFormState(
-        origin: state.destination,
-        destination: state.origin,
-        departAt: state.departAt,
-      );
+    origin: state.destination,
+    destination: state.origin,
+    departAt: state.departAt,
+  );
 }
 
 final plannerFormProvider = NotifierProvider<PlannerForm, PlannerFormState>(

@@ -13,12 +13,12 @@ const _routes = [
 class FakeRoutesRepository implements RoutesRepository {
   @override
   Future<List<RouteSummary>> search(String query) async => [
-        for (final route in _routes)
-          if ('${route.shortName} ${route.longName}'
-              .toLowerCase()
-              .contains(query.toLowerCase()))
-            route,
-      ];
+    for (final route in _routes)
+      if ('${route.shortName} ${route.longName}'.toLowerCase().contains(
+        query.toLowerCase(),
+      ))
+        route,
+  ];
 
   @override
   Future<RouteDetail> detail(int routeId) => throw UnimplementedError();
@@ -35,11 +35,16 @@ class FakeRoutesRepository implements RoutesRepository {
 void main() {
   test('routeSearchResultsProvider filters through the repository', () async {
     final container = ProviderContainer(
-      overrides: [routesRepositoryProvider.overrideWithValue(FakeRoutesRepository())],
+      overrides: [
+        routesRepositoryProvider.overrideWithValue(FakeRoutesRepository()),
+      ],
     );
     addTearDown(container.dispose);
 
-    expect(await container.read(routeSearchResultsProvider.future), hasLength(2));
+    expect(
+      await container.read(routeSearchResultsProvider.future),
+      hasLength(2),
+    );
 
     container.read(routeSearchQueryProvider.notifier).set('kisela');
     final filtered = await container.read(routeSearchResultsProvider.future);

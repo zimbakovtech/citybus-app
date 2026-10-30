@@ -46,9 +46,7 @@ class StopsPage extends ConsumerWidget {
               ),
               const SizedBox(height: Insets.sm),
               const Expanded(
-                child: TabBarView(
-                  children: [_SearchList(), _NearbyList()],
-                ),
+                child: TabBarView(children: [_SearchList(), _NearbyList()]),
               ),
             ],
           ),
@@ -81,8 +79,9 @@ class _StopTile extends StatelessWidget {
           ? null
           : Text(
               subtitle!,
-              style: theme.textTheme.bodySmall
-                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
             ),
       trailing: Icon(
         CupertinoIcons.chevron_right,

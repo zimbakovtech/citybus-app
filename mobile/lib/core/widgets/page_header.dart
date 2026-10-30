@@ -23,8 +23,9 @@ class PageHeader extends StatelessWidget {
             const SizedBox(height: Insets.xs),
             Text(
               subtitle!,
-              style: theme.textTheme.bodyMedium
-                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
             ),
           ],
         ],
