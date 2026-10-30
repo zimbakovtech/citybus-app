@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'planner_models.dart';
@@ -9,6 +9,7 @@ part of 'planner_models.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 PlanLeg _$PlanLegFromJson(
@@ -46,7 +47,7 @@ mixin _$PlanLeg {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PlanLeg);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is PlanLeg);
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -55,7 +56,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'PlanLeg()';
+    return 'PlanLeg()';
 }
 
 
@@ -201,7 +202,7 @@ return transfer(_that.atStop,_that.seconds);case _:
 @JsonSerializable()
 
 class PlanRideLeg implements PlanLeg {
-  const PlanRideLeg({required this.route, required this.tripId, required this.boardStop, required this.boardTime, required this.alightStop, required this.alightTime, required this.numStops, final  String? $type}): $type = $type ?? 'ride';
+  const PlanRideLeg({required this.route, required this.tripId, required this.boardStop, required this.boardTime, required this.alightStop, required this.alightTime, required this.numStops,  String? $type}): $type = $type ?? 'ride';
   factory PlanRideLeg.fromJson(Map<String, dynamic> json) => _$PlanRideLegFromJson(json);
 
  final  RouteSummary route;
@@ -229,16 +230,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PlanRideLeg&&(identical(other.route, route) || other.route == route)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.boardStop, boardStop) || other.boardStop == boardStop)&&(identical(other.boardTime, boardTime) || other.boardTime == boardTime)&&(identical(other.alightStop, alightStop) || other.alightStop == alightStop)&&(identical(other.alightTime, alightTime) || other.alightTime == alightTime)&&(identical(other.numStops, numStops) || other.numStops == numStops));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is PlanRideLeg&&(identical(other.route, route) || other.route == route)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.boardStop, boardStop) || other.boardStop == boardStop)&&(identical(other.boardTime, boardTime) || other.boardTime == boardTime)&&(identical(other.alightStop, alightStop) || other.alightStop == alightStop)&&(identical(other.alightTime, alightTime) || other.alightTime == alightTime)&&(identical(other.numStops, numStops) || other.numStops == numStops));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,route,tripId,boardStop,boardTime,alightStop,alightTime,numStops);
+int get hashCode {
+    return Object.hash(runtimeType,route,tripId,boardStop,boardTime,alightStop,alightTime,numStops);
+}
 
 @override
 String toString() {
-  return 'PlanLeg.ride(route: $route, tripId: $tripId, boardStop: $boardStop, boardTime: $boardTime, alightStop: $alightStop, alightTime: $alightTime, numStops: $numStops)';
+    return 'PlanLeg.ride(route: $route, tripId: $tripId, boardStop: $boardStop, boardTime: $boardTime, alightStop: $alightStop, alightTime: $alightTime, numStops: $numStops)';
 }
 
 
@@ -313,7 +316,7 @@ $StopSummaryCopyWith<$Res> get alightStop {
 @JsonSerializable()
 
 class PlanTransferLeg implements PlanLeg {
-  const PlanTransferLeg({required this.atStop, required this.seconds, final  String? $type}): $type = $type ?? 'transfer';
+  const PlanTransferLeg({required this.atStop, required this.seconds,  String? $type}): $type = $type ?? 'transfer';
   factory PlanTransferLeg.fromJson(Map<String, dynamic> json) => _$PlanTransferLegFromJson(json);
 
  final  StopSummary atStop;
@@ -336,16 +339,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PlanTransferLeg&&(identical(other.atStop, atStop) || other.atStop == atStop)&&(identical(other.seconds, seconds) || other.seconds == seconds));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is PlanTransferLeg&&(identical(other.atStop, atStop) || other.atStop == atStop)&&(identical(other.seconds, seconds) || other.seconds == seconds));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,atStop,seconds);
+int get hashCode {
+    return Object.hash(runtimeType,atStop,seconds);
+}
 
 @override
 String toString() {
-  return 'PlanLeg.transfer(atStop: $atStop, seconds: $seconds)';
+    return 'PlanLeg.transfer(atStop: $atStop, seconds: $seconds)';
 }
 
 
@@ -410,16 +415,21 @@ $PlanResponseCopyWith<PlanResponse> get copyWith => _$PlanResponseCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PlanResponse&&(identical(other.found, found) || other.found == found)&&(identical(other.fromStop, fromStop) || other.fromStop == fromStop)&&(identical(other.toStop, toStop) || other.toStop == toStop)&&(identical(other.departAt, departAt) || other.departAt == departAt)&&(identical(other.arriveAt, arriveAt) || other.arriveAt == arriveAt)&&(identical(other.durationSeconds, durationSeconds) || other.durationSeconds == durationSeconds)&&(identical(other.transfers, transfers) || other.transfers == transfers)&&const DeepCollectionEquality().equals(other.legs, legs));
+  final _this = this as PlanResponse;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PlanResponse&&(identical(other.found, _this.found) || other.found == _this.found)&&(identical(other.fromStop, _this.fromStop) || other.fromStop == _this.fromStop)&&(identical(other.toStop, _this.toStop) || other.toStop == _this.toStop)&&(identical(other.departAt, _this.departAt) || other.departAt == _this.departAt)&&(identical(other.arriveAt, _this.arriveAt) || other.arriveAt == _this.arriveAt)&&(identical(other.durationSeconds, _this.durationSeconds) || other.durationSeconds == _this.durationSeconds)&&(identical(other.transfers, _this.transfers) || other.transfers == _this.transfers)&&const DeepCollectionEquality().equals(other.legs, _this.legs));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,found,fromStop,toStop,departAt,arriveAt,durationSeconds,transfers,const DeepCollectionEquality().hash(legs));
+int get hashCode {
+  final _this = this as PlanResponse;
+  return Object.hash(runtimeType,_this.found,_this.fromStop,_this.toStop,_this.departAt,_this.arriveAt,_this.durationSeconds,_this.transfers,const DeepCollectionEquality().hash(_this.legs));
+}
 
 @override
 String toString() {
-  return 'PlanResponse(found: $found, fromStop: $fromStop, toStop: $toStop, departAt: $departAt, arriveAt: $arriveAt, durationSeconds: $durationSeconds, transfers: $transfers, legs: $legs)';
+  final _this = this as PlanResponse;
+  return 'PlanResponse(found: ${_this.found}, fromStop: ${_this.fromStop}, toStop: ${_this.toStop}, departAt: ${_this.departAt}, arriveAt: ${_this.arriveAt}, durationSeconds: ${_this.durationSeconds}, transfers: ${_this.transfers}, legs: ${_this.legs})';
 }
 
 
@@ -448,7 +458,7 @@ class _$PlanResponseCopyWithImpl<$Res>
 /// Create a copy of PlanResponse
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? found = null,Object? fromStop = null,Object? toStop = null,Object? departAt = null,Object? arriveAt = freezed,Object? durationSeconds = freezed,Object? transfers = freezed,Object? legs = null,}) {
-  return _then(_self.copyWith(
+  return _then(PlanResponse(
 found: null == found ? _self.found : found // ignore: cast_nullable_to_non_nullable
 as bool,fromStop: null == fromStop ? _self.fromStop : fromStop // ignore: cast_nullable_to_non_nullable
 as StopSummary,toStop: null == toStop ? _self.toStop : toStop // ignore: cast_nullable_to_non_nullable
@@ -616,7 +626,7 @@ return $default(_that.found,_that.fromStop,_that.toStop,_that.departAt,_that.arr
 @JsonSerializable()
 
 class _PlanResponse implements PlanResponse {
-  const _PlanResponse({required this.found, required this.fromStop, required this.toStop, required this.departAt, this.arriveAt, this.durationSeconds, this.transfers, required final  List<PlanLeg> legs}): _legs = legs;
+  const _PlanResponse({required this.found, required this.fromStop, required this.toStop, required this.departAt, this.arriveAt, this.durationSeconds, this.transfers, required  List<PlanLeg> legs}): _legs = legs;
   factory _PlanResponse.fromJson(Map<String, dynamic> json) => _$PlanResponseFromJson(json);
 
 @override final  bool found;
@@ -647,16 +657,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PlanResponse&&(identical(other.found, found) || other.found == found)&&(identical(other.fromStop, fromStop) || other.fromStop == fromStop)&&(identical(other.toStop, toStop) || other.toStop == toStop)&&(identical(other.departAt, departAt) || other.departAt == departAt)&&(identical(other.arriveAt, arriveAt) || other.arriveAt == arriveAt)&&(identical(other.durationSeconds, durationSeconds) || other.durationSeconds == durationSeconds)&&(identical(other.transfers, transfers) || other.transfers == transfers)&&const DeepCollectionEquality().equals(other._legs, _legs));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _PlanResponse&&(identical(other.found, found) || other.found == found)&&(identical(other.fromStop, fromStop) || other.fromStop == fromStop)&&(identical(other.toStop, toStop) || other.toStop == toStop)&&(identical(other.departAt, departAt) || other.departAt == departAt)&&(identical(other.arriveAt, arriveAt) || other.arriveAt == arriveAt)&&(identical(other.durationSeconds, durationSeconds) || other.durationSeconds == durationSeconds)&&(identical(other.transfers, transfers) || other.transfers == transfers)&&const DeepCollectionEquality().equals(other.legs, _legs));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,found,fromStop,toStop,departAt,arriveAt,durationSeconds,transfers,const DeepCollectionEquality().hash(_legs));
+int get hashCode {
+    return Object.hash(runtimeType,found,fromStop,toStop,departAt,arriveAt,durationSeconds,transfers,const DeepCollectionEquality().hash(_legs));
+}
 
 @override
 String toString() {
-  return 'PlanResponse(found: $found, fromStop: $fromStop, toStop: $toStop, departAt: $departAt, arriveAt: $arriveAt, durationSeconds: $durationSeconds, transfers: $transfers, legs: $legs)';
+    return 'PlanResponse(found: $found, fromStop: $fromStop, toStop: $toStop, departAt: $departAt, arriveAt: $arriveAt, durationSeconds: $durationSeconds, transfers: $transfers, legs: $legs)';
 }
 
 

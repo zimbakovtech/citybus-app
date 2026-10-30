@@ -21,7 +21,12 @@ void main() {
     test('Departure parses nested route and ISO datetime', () {
       final departure = Departure.fromJson(const {
         'trip_id': 210,
-        'route': {'id': 1, 'short_name': '2', 'long_name': 'x', 'color': 'D32F2F'},
+        'route': {
+          'id': 1,
+          'short_name': '2',
+          'long_name': 'x',
+          'color': 'D32F2F',
+        },
         'headsign': 'Novo Lisice',
         'departure_at': '2026-05-04T08:14:00',
         'stop_sequence': 8,
@@ -33,7 +38,12 @@ void main() {
     test('PlanResponse discriminates ride and transfer legs by type', () {
       final plan = PlanResponse.fromJson(const {
         'found': true,
-        'from_stop': {'id': 6, 'name': 'Gradski Park', 'lat': 42.0, 'lon': 21.4},
+        'from_stop': {
+          'id': 6,
+          'name': 'Gradski Park',
+          'lat': 42.0,
+          'lon': 21.4,
+        },
         'to_stop': {'id': 20, 'name': 'Kisela Voda', 'lat': 41.9, 'lon': 21.4},
         'depart_at': '2026-05-04T08:00:00',
         'arrive_at': '2026-05-04T08:36:30',
@@ -44,9 +54,19 @@ void main() {
             'type': 'ride',
             'route': {'id': 3, 'short_name': '15'},
             'trip_id': 300,
-            'board_stop': {'id': 6, 'name': 'Gradski Park', 'lat': 42.0, 'lon': 21.4},
+            'board_stop': {
+              'id': 6,
+              'name': 'Gradski Park',
+              'lat': 42.0,
+              'lon': 21.4,
+            },
             'board_time': '2026-05-04T08:00:00',
-            'alight_stop': {'id': 2, 'name': 'Plostad', 'lat': 41.99, 'lon': 21.43},
+            'alight_stop': {
+              'id': 2,
+              'name': 'Plostad',
+              'lat': 41.99,
+              'lon': 21.43,
+            },
             'alight_time': '2026-05-04T08:08:00',
             'num_stops': 3,
           },

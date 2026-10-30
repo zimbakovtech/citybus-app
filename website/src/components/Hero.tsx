@@ -1,5 +1,5 @@
 import { ArrowRight } from 'lucide-react'
-import { GITHUB_URL } from '../lib/constants'
+import { asset, GITHUB_URL } from '../lib/constants'
 import { GithubIcon } from './GithubIcon'
 
 const STATS = [
@@ -75,7 +75,7 @@ export function Hero() {
           />
           <div className="relative rounded-[2.2rem] border border-slate-800 bg-slate-900 p-2 shadow-2xl shadow-slate-900/25">
             <img
-              src="/screenshots/live.webp"
+              src={asset('screenshots/live.webp')}
               alt="CityBus app showing the live vehicle map of Skopje with buses moving along their routes"
               width="540"
               height="1174"

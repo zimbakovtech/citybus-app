@@ -65,8 +65,10 @@ class PlannerPage extends ConsumerWidget {
                       Padding(
                         padding: const EdgeInsets.only(right: Insets.sm),
                         child: IconButton.outlined(
-                          icon: const Icon(CupertinoIcons.arrow_up_arrow_down,
-                              size: 18),
+                          icon: const Icon(
+                            CupertinoIcons.arrow_up_arrow_down,
+                            size: 18,
+                          ),
                           tooltip: 'Swap origin and destination',
                           onPressed: () =>
                               ref.read(plannerFormProvider.notifier).swap(),
@@ -169,8 +171,9 @@ class _EndpointTile extends ConsumerWidget {
                 children: [
                   Text(
                     label,
-                    style: theme.textTheme.labelSmall
-                        ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
                   ),
                   const SizedBox(height: 2),
                   Text(
@@ -214,8 +217,9 @@ class _DepartureTimeTile extends ConsumerWidget {
       ),
       title: Text(
         'Departure',
-        style: theme.textTheme.labelSmall
-            ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+        style: theme.textTheme.labelSmall?.copyWith(
+          color: theme.colorScheme.onSurfaceVariant,
+        ),
       ),
       subtitle: Text(
         form.departAt == null
@@ -298,8 +302,9 @@ class _StopPickerSheetState extends ConsumerState<_StopPickerSheet> {
                     separatorBuilder: (_, _) =>
                         const Divider(indent: 72, endIndent: Insets.lg),
                     itemBuilder: (context, index) => ListTile(
-                      leading:
-                          const IconBadge(icon: CupertinoIcons.map_pin_ellipse),
+                      leading: const IconBadge(
+                        icon: CupertinoIcons.map_pin_ellipse,
+                      ),
                       title: Text(stops[index].name),
                       onTap: () => Navigator.pop(context, stops[index]),
                     ),
@@ -415,9 +420,7 @@ class _RideLeg extends StatelessWidget {
               width: 32,
             ),
             const SizedBox(width: Insets.md),
-            Expanded(
-              child: Text(stop, style: theme.textTheme.titleSmall),
-            ),
+            Expanded(child: Text(stop, style: theme.textTheme.titleSmall)),
             Text(time, style: timeStyle),
           ],
         ),
@@ -435,15 +438,22 @@ class _RideLeg extends StatelessWidget {
           children: [
             SizedBox(
               width: 32,
-              child: Center(child: Container(width: 2, height: 28, color: color)),
+              child: Center(
+                child: Container(width: 2, height: 28, color: color),
+              ),
             ),
             const SizedBox(width: Insets.md),
-            RouteBadge(label: leg.route.shortName ?? '?', color: leg.route.color, size: 28),
+            RouteBadge(
+              label: leg.route.shortName ?? '?',
+              color: leg.route.color,
+              size: 28,
+            ),
             const SizedBox(width: Insets.sm),
             Text(
               '${leg.numStops} stops',
-              style: theme.textTheme.bodySmall
-                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
             ),
           ],
         ),
@@ -481,8 +491,9 @@ class _TransferLeg extends StatelessWidget {
           Expanded(
             child: Text(
               'Transfer · ${(leg.seconds / 60).ceil()} min wait',
-              style: theme.textTheme.labelMedium
-                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
             ),
           ),
         ],

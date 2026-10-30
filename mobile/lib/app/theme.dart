@@ -153,18 +153,16 @@ ThemeData buildTheme(Brightness brightness) {
       elevation: 0,
       margin: EdgeInsets.zero,
       color: scheme.surface,
-      shape: shape(Radii.lg).copyWith(
-        side: BorderSide(color: scheme.outlineVariant),
-      ),
+      shape: shape(Radii.lg)
+          .copyWith(side: BorderSide(color: scheme.outlineVariant)),
       clipBehavior: Clip.antiAlias,
     ),
     searchBarTheme: SearchBarThemeData(
       elevation: const WidgetStatePropertyAll(0),
       backgroundColor: WidgetStatePropertyAll(scheme.surface),
       shape: WidgetStatePropertyAll(
-        shape(Radii.md).copyWith(
-          side: BorderSide(color: scheme.outlineVariant),
-        ),
+        shape(Radii.md)
+            .copyWith(side: BorderSide(color: scheme.outlineVariant)),
       ),
       padding: const WidgetStatePropertyAll(
         EdgeInsets.symmetric(horizontal: Insets.lg),

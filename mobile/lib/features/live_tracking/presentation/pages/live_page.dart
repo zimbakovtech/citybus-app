@@ -67,12 +67,11 @@ class LivePage extends ConsumerWidget {
                             const SizedBox(width: Insets.md),
                             Text(
                               '${fleet.length}',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
+                              style: Theme.of(context).textTheme.titleMedium
                                   ?.copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primary,
                                   ),
                             ),
                           ],
@@ -133,10 +132,10 @@ class _VehicleMarker extends StatelessWidget {
   final LiveVehicle vehicle;
 
   Color get _delayColor => switch (vehicle.delaySeconds) {
-        <= 60 => const Color(0xFF16A34A),
-        <= 240 => const Color(0xFFEA580C),
-        _ => const Color(0xFFDC2626),
-      };
+    <= 60 => const Color(0xFF16A34A),
+    <= 240 => const Color(0xFFEA580C),
+    _ => const Color(0xFFDC2626),
+  };
 
   @override
   Widget build(BuildContext context) {

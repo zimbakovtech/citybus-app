@@ -1,4 +1,4 @@
-import { GITHUB_URL, NAV_LINKS } from '../lib/constants'
+import { asset, GITHUB_URL, NAV_LINKS } from '../lib/constants'
 import { GithubIcon } from './GithubIcon'
 
 export function Nav() {
@@ -9,7 +9,7 @@ export function Nav() {
         className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6"
       >
         <a href="#main" className="flex items-center gap-2.5">
-          <img src="/favicon.svg" alt="" className="size-9" />
+          <img src={asset('favicon.svg')} alt="" className="size-9" />
           <span className="font-display text-lg font-bold tracking-tight">
             CityBus
           </span>

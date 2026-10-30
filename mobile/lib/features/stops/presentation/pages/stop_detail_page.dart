@@ -36,8 +36,8 @@ class StopDetailPage extends ConsumerWidget {
                 Text(
                   'Stop code ${stop.code}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
               const SectionHeader(title: 'Lines'),
               Wrap(
@@ -107,8 +107,9 @@ class _DepartureTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final minutesAway =
-        departure.departureAt.difference(DateTime.now()).inMinutes;
+    final minutesAway = departure.departureAt
+        .difference(DateTime.now())
+        .inMinutes;
     final imminent = minutesAway >= 0 && minutesAway <= 10;
     return ListTile(
       leading: RouteBadge(

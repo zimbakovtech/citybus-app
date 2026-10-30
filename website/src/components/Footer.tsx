@@ -1,4 +1,4 @@
-import { GITHUB_URL } from '../lib/constants'
+import { asset, GITHUB_URL } from '../lib/constants'
 
 const LINKS = [
   { href: GITHUB_URL, label: 'GitHub repository' },
@@ -13,7 +13,7 @@ export function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 sm:px-6 md:flex-row md:items-start md:justify-between">
         <div className="max-w-sm">
           <div className="flex items-center gap-2.5">
-            <img src="/favicon.svg" alt="" className="size-9" />
+            <img src={asset('favicon.svg')} alt="" className="size-9" />
             <span className="font-display text-lg font-bold tracking-tight text-white">
               CityBus
             </span>

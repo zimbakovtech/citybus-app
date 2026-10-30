@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'live_models.dart';
@@ -9,6 +9,7 @@ part of 'live_models.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $LiveVehicleCopyWith<LiveVehicle> get copyWith => _$LiveVehicleCopyWithImpl<Live
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LiveVehicle&&(identical(other.vehicleId, vehicleId) || other.vehicleId == vehicleId)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.routeShortName, routeShortName) || other.routeShortName == routeShortName)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lon, lon) || other.lon == lon)&&(identical(other.bearing, bearing) || other.bearing == bearing)&&(identical(other.delaySeconds, delaySeconds) || other.delaySeconds == delaySeconds)&&(identical(other.currentStopId, currentStopId) || other.currentStopId == currentStopId));
+  final _this = this as LiveVehicle;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LiveVehicle&&(identical(other.vehicleId, _this.vehicleId) || other.vehicleId == _this.vehicleId)&&(identical(other.tripId, _this.tripId) || other.tripId == _this.tripId)&&(identical(other.routeShortName, _this.routeShortName) || other.routeShortName == _this.routeShortName)&&(identical(other.lat, _this.lat) || other.lat == _this.lat)&&(identical(other.lon, _this.lon) || other.lon == _this.lon)&&(identical(other.bearing, _this.bearing) || other.bearing == _this.bearing)&&(identical(other.delaySeconds, _this.delaySeconds) || other.delaySeconds == _this.delaySeconds)&&(identical(other.currentStopId, _this.currentStopId) || other.currentStopId == _this.currentStopId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,vehicleId,tripId,routeShortName,lat,lon,bearing,delaySeconds,currentStopId);
+int get hashCode {
+  final _this = this as LiveVehicle;
+  return Object.hash(runtimeType,_this.vehicleId,_this.tripId,_this.routeShortName,_this.lat,_this.lon,_this.bearing,_this.delaySeconds,_this.currentStopId);
+}
 
 @override
 String toString() {
-  return 'LiveVehicle(vehicleId: $vehicleId, tripId: $tripId, routeShortName: $routeShortName, lat: $lat, lon: $lon, bearing: $bearing, delaySeconds: $delaySeconds, currentStopId: $currentStopId)';
+  final _this = this as LiveVehicle;
+  return 'LiveVehicle(vehicleId: ${_this.vehicleId}, tripId: ${_this.tripId}, routeShortName: ${_this.routeShortName}, lat: ${_this.lat}, lon: ${_this.lon}, bearing: ${_this.bearing}, delaySeconds: ${_this.delaySeconds}, currentStopId: ${_this.currentStopId})';
 }
 
 
@@ -66,7 +72,7 @@ class _$LiveVehicleCopyWithImpl<$Res>
 /// Create a copy of LiveVehicle
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? vehicleId = null,Object? tripId = freezed,Object? routeShortName = freezed,Object? lat = null,Object? lon = null,Object? bearing = freezed,Object? delaySeconds = null,Object? currentStopId = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(LiveVehicle(
 vehicleId: null == vehicleId ? _self.vehicleId : vehicleId // ignore: cast_nullable_to_non_nullable
 as String,tripId: freezed == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int?,routeShortName: freezed == routeShortName ? _self.routeShortName : routeShortName // ignore: cast_nullable_to_non_nullable
@@ -241,16 +247,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LiveVehicle&&(identical(other.vehicleId, vehicleId) || other.vehicleId == vehicleId)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.routeShortName, routeShortName) || other.routeShortName == routeShortName)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lon, lon) || other.lon == lon)&&(identical(other.bearing, bearing) || other.bearing == bearing)&&(identical(other.delaySeconds, delaySeconds) || other.delaySeconds == delaySeconds)&&(identical(other.currentStopId, currentStopId) || other.currentStopId == currentStopId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _LiveVehicle&&(identical(other.vehicleId, vehicleId) || other.vehicleId == vehicleId)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.routeShortName, routeShortName) || other.routeShortName == routeShortName)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lon, lon) || other.lon == lon)&&(identical(other.bearing, bearing) || other.bearing == bearing)&&(identical(other.delaySeconds, delaySeconds) || other.delaySeconds == delaySeconds)&&(identical(other.currentStopId, currentStopId) || other.currentStopId == currentStopId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,vehicleId,tripId,routeShortName,lat,lon,bearing,delaySeconds,currentStopId);
+int get hashCode {
+    return Object.hash(runtimeType,vehicleId,tripId,routeShortName,lat,lon,bearing,delaySeconds,currentStopId);
+}
 
 @override
 String toString() {
-  return 'LiveVehicle(vehicleId: $vehicleId, tripId: $tripId, routeShortName: $routeShortName, lat: $lat, lon: $lon, bearing: $bearing, delaySeconds: $delaySeconds, currentStopId: $currentStopId)';
+    return 'LiveVehicle(vehicleId: $vehicleId, tripId: $tripId, routeShortName: $routeShortName, lat: $lat, lon: $lon, bearing: $bearing, delaySeconds: $delaySeconds, currentStopId: $currentStopId)';
 }
 
 
